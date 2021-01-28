@@ -19,6 +19,7 @@
 
 <script>
 import axios from 'axios';
+import catchify from 'catchify';
 
 export default {
   data: () => ({
@@ -44,9 +45,37 @@ export default {
 
   methods: {
     async doImport () {
-      await axios.post('/api/post-metroretro', {
-        json: window.btoa(this.json),
+      const loading = this.$vs.load({
+        text: 'Posting to Confluence...',
       });
+
+      const [err, { data }] = await catchify(await axios.post('/api/post-metroretro', {
+        json: window.btoa(this.json),
+      }));
+
+      loading.close();
+
+      if (!err) {
+        const notif = this.$vs.notification({
+          position: 'bottom-right',
+          duration: 'none',
+          color: '#363448',
+          title: 'Import Success!',
+          text: `"${data.title}" has been imported to Confluence. Click here to Visit the page.`,
+          onClick: () => {
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.setAttribute('target', '_blank');
+            a.setAttribute('href', data.url);
+            a.addEventListener('click', (e) => {
+              a.remove();
+              notif.close();
+            });
+            document.body.append(a);
+            a.click();
+          },
+        });
+      }
     },
   },
 };

@@ -1,6 +1,24 @@
 <template lang="pug">
   .retro-importer
     h2 Import Metro Retro to Confluence
+
+    .retro-importer__hint
+      vs-alert(:hidden-content.sync="hintHidden" border color="#348ad6")
+        template(#icon): i.bx.bx-info-circle
+        template(#title) How to Use?
+        ul.retro-importer__hint-items
+          li Make sure #[strong Action Items] area on MetroRetro exacly named with #[strong Actions].
+          li
+            | Copy your #[strong JSON] of MetroRetro data from the #[strong Export] menu on the right-top of page.
+            ul
+              li Clik #[Export].
+              li Select #[strong JSON] for #[strong Export Format].
+              li Click #[strong View Raw].
+              li Click #[strong Copy To Clipboard].
+
+          li Paste here.
+          li Finally, #[strong Import to Confluence].
+
     .retro-importer__editor: codemirror(
       v-model="json"
       :options="cmOption"
@@ -8,11 +26,11 @@
 
     div(style="margin-top:24px")
       vs-button(
+        :disabled="!json"
         square
-        flat
         gradient
-        color="#2e3540"
-        size="default"
+        color="primary"
+        size="large"
         @click.native="doImport"
         ) Import to Confluence
 </template>
@@ -23,6 +41,8 @@ import catchify from 'catchify';
 
 export default {
   data: () => ({
+    hintHidden: true,
+
     json: '',
     cmOption: {
       tabSize: 4,
@@ -88,6 +108,10 @@ export default {
     border: 1px solid #ddd;
     border-radius: 4px;
     overflow: hidden;
+  }
+
+  &__hint {
+    margin-bottom: 20px;
   }
 
   /deep/ {

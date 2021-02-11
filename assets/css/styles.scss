@@ -19,6 +19,21 @@ h6 {
   margin-top: 4px;
 }
 
+ul {
+  padding: 0;
+  margin: 0;
+  list-style-position: inside;
+
+  li {
+    margin-bottom: 4px;
+    margin-top: 4px;
+  }
+}
+
+li > ul {
+  padding-left: 20px;
+}
+
 .content {
   padding: 26px 26px 0;
 }
@@ -27,31 +42,6 @@ h6 {
   margin-left: 40px;
 }
 
-// .g-container {
-//   padding: 16px;
-//   border-radius: 12px;
-//   border-bottom: 0 solid rgba(0, 0, 0, 0.03);
-//   background: #fff;
-//   position: relative;
-//   overflow: hidden;
-//   transition: all 0.25s ease;
-//   height: auto;
-//   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, var(--vs-shadow-opacity));
-// }
-
-// .vs-button {
-//   --vs-button-margin: 0;
-
-//   font-family: Ubuntu, sans-serif !important;
-// }
-
-// .vs-dialog-content.blur {
-//   backdrop-filter: saturate(180%) blur(4px);
-// }
-
-// .vs-tooltip {
-//   > * {
-//     display: inline-block;
-//     margin-top: 3px;
-//   }
-// }
+.vs-button {
+  --vs-button-margin: 0;
+}

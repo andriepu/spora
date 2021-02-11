@@ -99,8 +99,8 @@ export default {
       handler: '~/api/_api-guard',
     },
     {
-      path: '/api/post-metroretro',
-      handler: '~/api/post-metroretro',
+      path: '/api/post-retro-for-confluence',
+      handler: '~/post-retro-for-confluence',
     },
     {
       path: '/api/get-future-sprints',

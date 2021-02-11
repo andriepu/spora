@@ -174,7 +174,8 @@ export default {
         text: 'Exporting to Confluence...',
       });
 
-      const [err, resp] = await catchify(axios.post('/api/post-grooming-for-confluence', {
+      const path = '/api/post-grooming-for-confluence';
+      const [err, resp] = await catchify(axios.post(path, {
         issues: this.issues,
       }));
 

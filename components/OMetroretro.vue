@@ -66,7 +66,8 @@ export default {
         text: 'Exporting to Confluence...',
       });
 
-      const [err, resp] = await catchify(await axios.post('/api/post-metroretro', {
+      const path = '/api/post-retro-for-confluence';
+      const [err, resp] = await catchify(await axios.post(path, {
         json: window.btoa(this.json),
       }));
 

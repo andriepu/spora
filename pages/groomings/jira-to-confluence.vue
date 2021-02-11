@@ -1,5 +1,5 @@
 <template lang="pug">
-  o-metroretro-importer
+  o-jira-grooming
 </template>
 
 <script>

@@ -22,16 +22,29 @@ h6 {
 ul {
   padding: 0;
   margin: 0;
-  list-style-position: inside;
+  margin-left: 12px;
+  list-style-position: outside;
 
   li {
     margin-bottom: 4px;
     margin-top: 4px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
 li > ul {
-  padding-left: 20px;
+  margin-left: 16px;
+}
+
+label {
+  margin-right: 16px;
 }
 
 .content {
@@ -44,4 +57,8 @@ li > ul {
 
 .vs-button {
   --vs-button-margin: 0;
+}
+
+.vs-select__label {
+  margin-top: 2px;
 }

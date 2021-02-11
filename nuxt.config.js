@@ -102,5 +102,13 @@ export default {
       path: '/api/post-metroretro',
       handler: '~/api/post-metroretro',
     },
+    {
+      path: '/api/get-future-sprints',
+      handler: '~/api/get-future-sprints',
+    },
+    {
+      path: '/api/get-sprint-issues',
+      handler: '~/api/get-sprint-issues',
+    },
   ],
 };

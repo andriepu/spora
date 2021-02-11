@@ -1,6 +1,6 @@
 <template lang="pug">
   .retro-importer
-    h2 Import Metro Retro to Confluence
+    h2 Export Metro Retro to Confluence
 
     .retro-importer__hint
       vs-alert(:hidden-content.sync="hintHidden" border color="#348ad6")
@@ -9,15 +9,15 @@
         ul.retro-importer__hint-items
           li Make sure #[strong Action Items] area on MetroRetro exacly named with #[strong Actions].
           li
-            | Copy your #[strong JSON] of MetroRetro data from the #[strong Export] menu on the right-top of page.
+            | Copy #[strong JSON] of MetroRetro data from the #[strong Export] menu on the right-top of page.
             ul
-              li Clik #[Export].
+              li Clik #[strong Export].
               li Select #[strong JSON] for #[strong Export Format].
               li Click #[strong View Raw].
               li Click #[strong Copy To Clipboard].
 
           li Paste here.
-          li Finally, #[strong Import to Confluence].
+          li Click #[i.bx.bx-export] #[strong Export to Confluence].
 
     .retro-importer__editor: codemirror(
       v-model="json"
@@ -27,12 +27,9 @@
     div(style="margin-top:24px")
       vs-button(
         :disabled="!json"
-        square
-        gradient
-        color="primary"
-        size="large"
-        @click.native="doImport"
-        ) Import to Confluence
+        color="#489ae4"
+        @click.native="doSaveConfluence"
+        ): #[i.bx.bx-export] &nbsp; Export to Confluence
 </template>
 
 <script>
@@ -64,12 +61,12 @@ export default {
   }),
 
   methods: {
-    async doImport () {
+    async doSaveConfluence () {
       const loading = this.$vs.load({
-        text: 'Posting to Confluence...',
+        text: 'Exporting to Confluence...',
       });
 
-      const [err, { data }] = await catchify(await axios.post('/api/post-metroretro', {
+      const [err, resp] = await catchify(await axios.post('/api/post-metroretro', {
         json: window.btoa(this.json),
       }));
 
@@ -80,20 +77,30 @@ export default {
           position: 'bottom-right',
           duration: 'none',
           color: '#363448',
-          title: 'Import Success!',
-          text: `"${data.title}" has been imported to Confluence. Click here to Visit the page.`,
+          title: 'Export Success!',
+          text: `"${resp.data.title}" has been exported to Confluence. Click here to Visit the page.`,
           onClick: () => {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.setAttribute('target', '_blank');
-            a.setAttribute('href', data.url);
+            a.setAttribute('href', resp.data.url);
             a.addEventListener('click', (e) => {
               a.remove();
               notif.close();
             });
+
             document.body.append(a);
+
             a.click();
           },
+        });
+      } else {
+        this.$vs.notification({
+          position: 'bottom-right',
+          duration: 5000,
+          color: 'danger',
+          title: 'Export Failed!',
+          text: err.message,
         });
       }
     },

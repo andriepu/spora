@@ -4,11 +4,11 @@ import qs from 'qs';
 const {
   ATLASSIAN_USERNAME,
   ATLASSIAN_PASSWORD,
-  CONFLUENCE_URL,
+  JIRA_URL,
 } = process.env;
 
 export default axios.create({
-  baseURL: new URL('/wiki/rest/api', CONFLUENCE_URL).href,
+  baseURL: new URL('/rest/agile/1.0', JIRA_URL).href,
   headers: {
     'Content-Type': 'application/json',
   },

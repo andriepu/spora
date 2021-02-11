@@ -1,19 +1,15 @@
 <template lang="pug">
-  div
+  div(style="margin-bottom:36px")
     vs-sidebar(v-model="activeTab" reduce open right)
       template(#logo)
         img(src="https://s1.bukalapak.com/ast/sigil/preproduction/bukalapak-logo-icon.svg")
 
-      vs-sidebar-item(id="import-funretro" to="/")
-        template(#icon)
-          img(src="/images/funretro-icon.png" style="width:20px;height:20px")
-        | Import Funretro
-      vs-sidebar-item(id="import-metroretro" to="/import-metroretro")
+      vs-sidebar-item(id="metroretro" to="/retros/metroretro-to-confluence")
         template(#icon)
           img(src="/images/metroretro-icon.png" style="width:28px;height:28px")
         | Import Metro Retro
 
-      vs-sidebar-item(id="jira-to-confluence" to="/")
+      vs-sidebar-item(id="jira-grooming" to="/groomings/jira-to-confluence")
         template(#icon): i.bx.bx-traffic-cone
         | JIRA to Confluence
       vs-sidebar-item(id="confluence-to-jira" to="/")

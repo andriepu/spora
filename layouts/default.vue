@@ -15,7 +15,7 @@
           img(src="/images/metroretro-icon.png" style="width:28px;height:28px")
         | Import Metro Retro
 
-      vs-sidebar-item(style="margin-top:24px" id="groomings-jira-to-confluence" to="/groomings/jira-to-confluence")
+      vs-sidebar-item(style="margin-top:12px" id="groomings-jira-to-confluence" to="/groomings/jira-to-confluence")
         template(#icon)
           img(src="/images/confluence-icon.png" style="width:20px;height:20px")
         | Create Grooming Document

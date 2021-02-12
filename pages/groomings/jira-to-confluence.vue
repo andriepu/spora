@@ -1,5 +1,5 @@
 <template lang="pug">
-  o-jira-grooming
+  o-grooming-jira
 </template>
 
 <script>

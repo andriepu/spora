@@ -1,5 +1,5 @@
 <template lang="pug">
-  o-retro-metroretro
+  o-grooming-confluence
 </template>
 
 <script>

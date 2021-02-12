@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
-import wrapHTML from './../wrap-html';
-import membersByEmail from './../../_members-by-email';
+import wrapHTML from './../_wrap-html';
+import membersByEmail from './../_members-by-email';
 
 const { SQUAD_NAME } = process.env;
 

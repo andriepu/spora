@@ -1,14 +1,14 @@
 <template lang="pug">
   .jira-grooming
-    h2 Import JIRA to Confluence for Grooming
+    h2 Export JIRA to Confluence for Grooming
 
     .jira-grooming__hint
       vs-alert(:hidden-content.sync="hintHidden" border color="#348ad6")
         template(#icon): i.bx.bx-info-circle
         template(#title) How to Use?
-        ul.retro-importer__hint-items
+        ul.jira-grooming__hint-items
           li Select sprint section that containing tasks that ready for grooming.
-          li Click import (#[i.bx.bx-import]) button.
+          li Click import [#[i.bx.bx-import]] button.
           li Select tasks that you want to take for grooming.
           li Click #[i.bx.bx-export] #[strong Export to Confluence].
 
@@ -66,18 +66,18 @@
                   vs-row.jira-grooming__table-expand(justify="center")
                     vs-col(offset="1" w="4")
                       h4 Implementation Detail
-                      div(v-html="mdToHtml(issue.description || '-')")
+                      .jira-grooming__expand-content(v-html="wikiToHtml(issue.description)")
 
                     vs-col(w="4")
-                      h4 Notes & Constraints
-                      div(v-html="mdToHtml(issue.notes || '-')")
+                      h4 Constraints & Assumptions
+                      .jira-grooming__expand-content(v-html="wikiToHtml(issue.notes)")
 
                     vs-col(w="3")
                       h4 Acceptance Criteria
                       template(v-if="!issue.acceptances.length")
                         span -
                       template(v-else)
-                        ul: li(
+                        ul.jira-grooming__expand-content: li(
                           v-for="acc in issue.acceptances"
                           v-html="htmlNewline(acc)"
                           :key="acc"
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { markdown } from 'markdown';
+import j2m from 'jira2md';
 import axios from 'axios';
 import catchify from 'catchify';
 
@@ -142,8 +142,9 @@ export default {
   },
 
   methods: {
-    mdToHtml: markdown.toHTML,
-
+    wikiToHtml (wikiSyntax) {
+      return j2m.jira_to_html(wikiSyntax);
+    },
     getIssueUrl (key) {
       return new URL(`/browse/${key}`, JIRA_URL).href;
     },
@@ -191,13 +192,13 @@ export default {
       const path = '/api/post-grooming-for-confluence';
       const [err, resp] = await catchify(axios.post(path, {
         title: `Grooming @${this.activeSprint.name}`,
-        issues: this.selectedIssues,
+        issues: this.selectedIssues.map(({ key }) => key),
       }));
 
       if (!err) {
         const notif = this.$vs.notification({
           position: 'bottom-right',
-          duration: 'none',
+          duration: 10000,
           color: '#363448',
           title: 'Export Success!',
           text: `"${resp.data.title}" has been exported to Confluence. Click here to Visit the page.`,
@@ -247,6 +248,23 @@ export default {
   &__table-expand {
     padding: 12px 0 20px;
     border-top: 1px solid #ddd;
+    margin-bottom: 12px;
+  }
+
+  &__expand-content {
+    height: 230px;
+    overflow: hidden;
+    position: relative;
+
+    &::after {
+      content: ' ';
+      background: linear-gradient(0deg, rgba(249, 252, 253, 0.8) 30%, rgba(221, 221, 221, 0) 100%);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 90px;
+    }
   }
 
   &__hint {

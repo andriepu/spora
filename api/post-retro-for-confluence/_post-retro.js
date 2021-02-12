@@ -1,8 +1,6 @@
-import { format } from 'date-fns';
 import axios from '../_/axios-confluence';
-import buildPageInfo, { buildParticipants } from './../_/helpers/confluence/build-page-info';
-import normalize from './../_/helpers/confluence/normalize';
-
+import buildPageInfo, { buildParticipants } from './../_/helpers/confluence/_build-page-info';
+import normalizeHtml from './../_/helpers/_normalize-html';
 
 const {
   CONFLUENCE_RETRO_PARENT_ID,
@@ -81,7 +79,7 @@ export default async ({ actions, date, participants, contents }) => {
     },
     body: {
       storage: {
-        value: normalize(`
+        value: normalizeHtml(`
           ${buildPageInfo({ date, participants })}
           ${buildRetroTable({ contents })}
           ${buildActions({ actions })}

@@ -12,8 +12,11 @@
       vs-sidebar-item(id="groomings-jira-to-confluence" to="/groomings/jira-to-confluence")
         template(#icon)
           img(src="/images/jira-icon.png" style="width:24px;height:24px")
-      vs-sidebar-item(id="confluence-to-jira" to="/")
-        template(#icon): i.bx.bx-traffic-cone
+        | JIRA to Confluence
+
+      vs-sidebar-item(id="groomings-confluence-to-jira" to="/groomings/confluence-to-jira")
+        template(#icon)
+          img(src="/images/confluence-icon.png" style="width:20px;height:20px")
         | Confluence to JIRA
 
     .content: nuxt

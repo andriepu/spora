@@ -1,9 +1,11 @@
 import axios from '../_/axios-jira-agile';
 
-const { BOARD_ID } = process.env;
+import {
+  ACCEPTANCE_KEY,
+  STORY_POINTS_KEY,
+} from '../_/helpers/_customfields';
 
-const STORY_POINTS_KEY = 'customfield_10022';
-const ACCEPTANCE_KEY = 'customfield_10102';
+const { BOARD_ID } = process.env;
 
 const fields = [
   'description',
@@ -29,7 +31,7 @@ export default sprintId => axios.get(`/board/${BOARD_ID}/sprint/${sprintId}/issu
           .replace(/\*(.*?)\*/g, '**$1**')
           .replace(/_(.*?)_/g, '*$1*'),
         notes: notes
-          .replace(/\*Notes & Constraints\*\n+/, '')
+          .replace(/\*Constraints & Assumptions\*\n+/, '')
           .replace(/\*(.*?)\*/g, '**$1**')
           .replace(/_(.*?)_/g, '*$1*'),
         summary: fields.summary,

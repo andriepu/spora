@@ -76,7 +76,7 @@ export default {
       if (!err) {
         const notif = this.$vs.notification({
           position: 'bottom-right',
-          duration: 'none',
+          duration: 10000,
           color: '#363448',
           title: 'Export Success!',
           text: `"${resp.data.title}" has been exported to Confluence. Click here to Visit the page.`,

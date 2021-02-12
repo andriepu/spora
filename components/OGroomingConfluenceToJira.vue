@@ -11,25 +11,29 @@
           li Click Send [#[i.bx.bx-send]] button.
 
     vs-row(align="center")
-      vs-select(
-        v-model="grooming"
-        :key="groomings.length"
-        filter
-        placeholder="Select Grooming Document"
-        ): vs-option(
-        v-for="grooming in groomings"
-        :key="grooming.id"
-        :label="grooming.title"
-        :value="`${grooming.id}`"
-        ) {{ grooming.title }}
+      template(v-if="groomings.length")
+        vs-select(
+          v-model="grooming"
+          :key="groomings.length"
+          filter
+          placeholder="Select Grooming Document"
+          ): vs-option(
+          v-for="grooming in groomings"
+          :key="grooming.id"
+          :label="grooming.title"
+          :value="`${grooming.id}`"
+          ) {{ grooming.title }}
 
-      .confluence-grooming__button-import
-        vs-button(
-          :disabled="!grooming"
-          icon
-          color="#489ae4"
-          @click.native="doSaveJira"
-          ): i.bx.bx-send
+        .confluence-grooming__button-import
+          vs-button(
+            :disabled="!grooming"
+            icon
+            color="#489ae4"
+            @click.native="doSaveJira"
+            ): i.bx.bx-send
+
+      template(v-else)
+        vs-row(align="center") #[i.bx.bx-error &nbsp;] No Grooming documents available.
 </template>
 
 <script>

@@ -1,8 +1,14 @@
 <template lang="pug">
   div(style="margin-bottom:36px")
-    vs-sidebar(v-model="activeTab" reduce open right)
+    vs-sidebar(
+      v-model="activeTab"
+      hoverExpand
+      open
+      reduce
+      )
+
       template(#logo)
-        img(src="https://s1.bukalapak.com/ast/sigil/preproduction/bukalapak-logo-icon.svg")
+        img(src="https://s1.bukalapak.com/ast/sigil/preproduction/bukalapak-logo-icon.svg" style="height:80px")
 
       vs-sidebar-item(id="retros-metroretro-to-confluence" to="/retros/metroretro-to-confluence")
         template(#icon)
@@ -41,6 +47,7 @@ export default {
   middleware: 'auth',
 
   data: () => ({
+    isSidebarHover: false,
     activeTab: '',
   }),
 
@@ -63,3 +70,22 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.content {
+  margin: 36px 16px;
+  transition: 0.2s ease-out;
+}
+
+.vs-sidebar-content {
+  transition: 0.2s ease-out;
+
+  + .content {
+    margin-left: 240px;
+  }
+
+  &.reduce + .content {
+    margin-left: 16px;
+  }
+}
+</style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-  o-grooming-confluence
+  o-grooming-confluence-to-jira
 </template>
 
 <script>

@@ -10,20 +10,20 @@
       template(#logo)
         img(src="https://s1.bukalapak.com/ast/sigil/preproduction/bukalapak-logo-icon.svg" style="height:80px")
 
-      vs-sidebar-item(id="retros-metroretro-to-confluence" to="/retros/metroretro-to-confluence")
+      vs-sidebar-item(style="margin-top:12px" id="retros-metroretro-to-confluence" to="/retros/metroretro-to-confluence")
         template(#icon)
           img(src="/images/metroretro-icon.png" style="width:28px;height:28px")
         | Import Metro Retro
 
-      vs-sidebar-item(id="groomings-jira-to-confluence" to="/groomings/jira-to-confluence")
+      vs-sidebar-item(style="margin-top:24px" id="groomings-jira-to-confluence" to="/groomings/jira-to-confluence")
         template(#icon)
-          img(src="/images/jira-icon.png" style="width:24px;height:24px")
-        | JIRA to Confluence
+          img(src="/images/confluence-icon.png" style="width:20px;height:20px")
+        | Create Grooming Document
 
       vs-sidebar-item(id="groomings-confluence-to-jira" to="/groomings/confluence-to-jira")
         template(#icon)
-          img(src="/images/confluence-icon.png" style="width:20px;height:20px")
-        | Confluence to JIRA
+          img(src="/images/jira-icon.png" style="width:24px;height:24px")
+        | Sync Grooming Document
 
     .content: nuxt
 </template>

@@ -100,11 +100,15 @@ export default {
     },
     {
       path: '/api/post-retro-for-confluence',
-      handler: '~/post-retro-for-confluence',
+      handler: '~/api/post-retro-for-confluence',
     },
     {
-      path: '/api/get-future-sprints',
-      handler: '~/api/get-future-sprints',
+      path: '/api/post-grooming-for-confluence',
+      handler: '~/api/post-grooming-for-confluence',
+    },
+    {
+      path: '/api/get-sprints',
+      handler: '~/api/get-sprints',
     },
     {
       path: '/api/get-sprint-issues',

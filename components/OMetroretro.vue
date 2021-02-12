@@ -29,7 +29,7 @@
         :disabled="!json"
         color="#489ae4"
         @click.native="doSaveConfluence"
-        ): #[i.bx.bx-export] &nbsp; Export to Confluence
+        ): | #[i.bx.bx-export] &nbsp; Export to Confluence
 </template>
 
 <script>

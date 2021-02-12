@@ -4,14 +4,14 @@
       template(#logo)
         img(src="https://s1.bukalapak.com/ast/sigil/preproduction/bukalapak-logo-icon.svg")
 
-      vs-sidebar-item(id="metroretro" to="/retros/metroretro-to-confluence")
+      vs-sidebar-item(id="retros-metroretro-to-confluence" to="/retros/metroretro-to-confluence")
         template(#icon)
           img(src="/images/metroretro-icon.png" style="width:28px;height:28px")
         | Import Metro Retro
 
-      vs-sidebar-item(id="jira-grooming" to="/groomings/jira-to-confluence")
-        template(#icon): i.bx.bx-traffic-cone
-        | JIRA to Confluence
+      vs-sidebar-item(id="groomings-jira-to-confluence" to="/groomings/jira-to-confluence")
+        template(#icon)
+          img(src="/images/jira-icon.png" style="width:24px;height:24px")
       vs-sidebar-item(id="confluence-to-jira" to="/")
         template(#icon): i.bx.bx-traffic-cone
         | Confluence to JIRA
@@ -45,7 +45,7 @@ export default {
     $route: {
       immediate: true,
       handler ({ name = '' } = {}) {
-        this.activeTab = name;
+        this.activeTab = name.split('/').pop();
       },
     },
   },

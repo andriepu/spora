@@ -15,11 +15,11 @@
     vs-row(align="center")
       vs-select(
         v-model="sprint"
-        :key="futureRetros.length"
+        :key="futuresSprint.length"
         filter
         placeholder="Select Section for Grooming"
         ): vs-option(
-        v-for="sprint in futureRetros"
+        v-for="sprint in futuresSprint"
         :key="sprint.id"
         :label="sprint.name"
         :value="`${sprint.id}`"
@@ -55,18 +55,20 @@
             template(#tbody)
               vs-tr(v-for="issue in issues" :key="issue.id")
                 vs-td
-                  vs-checkbox(:val="issue" v-model="selectedIssues")
-                vs-td {{ issue.key }}
+                  vs-checkbox(:val="issue" v-model="selectedIssues" @click.stop="")
+                vs-td
+                  a(:href="getIssueUrl(issue.key)" target="_blank" @click.stop="")
+                    | {{ issue.key }}
                 vs-td {{ issue.summary }}
                 vs-td(style="text-align:right") {{ issue.story_points || '-' }}
 
                 template(#expand)
                   vs-row.jira-grooming__table-expand(justify="center")
-                    vs-col(offset="2" w="4")
+                    vs-col(offset="1" w="4")
                       h4 Implementation Detail
                       div(v-html="mdToHtml(issue.description || '-')")
 
-                    vs-col(w="3")
+                    vs-col(w="4")
                       h4 Notes & Constraints
                       div(v-html="mdToHtml(issue.notes || '-')")
 
@@ -86,7 +88,7 @@
             :disabled="!selectedIssues.length"
             color="#489ae4"
             @click.native="doSaveConfluence"
-            ): #[i.bx.bx-export] &nbsp; Export to Confluence
+            ): | #[i.bx.bx-export] &nbsp; Export to Confluence
 
 </template>
 
@@ -95,11 +97,14 @@ import { markdown } from 'markdown';
 import axios from 'axios';
 import catchify from 'catchify';
 
+const { JIRA_URL } = process.env;
+
 export default {
   data: () => ({
     isIssuesFetched: false,
 
-    futureRetros: [],
+    activeSprint: null,
+    futuresSprint: [],
     hintHidden: true,
 
     sprint: '',
@@ -114,12 +119,17 @@ export default {
       text: 'Preparing data...',
     });
 
-    const [err, resp] = await catchify(axios.get('/api/get-future-sprints'));
+    const [err, resp] = await catchify(axios.get('/api/get-sprints', {
+      params: { state: 'active,future' },
+    }));
 
     loading.close();
 
     if (!err) {
-      this.futureRetros = resp.data;
+      const { futures, active } = resp.data;
+
+      this.futuresSprint = futures;
+      this.activeSprint = active;
     } else {
       this.$vs.notification({
         position: 'bottom-right',
@@ -133,6 +143,10 @@ export default {
 
   methods: {
     mdToHtml: markdown.toHTML,
+
+    getIssueUrl (key) {
+      return new URL(`/browse/${key}`, JIRA_URL).href;
+    },
 
     htmlNewline (str) {
       return str.replace(/\n+/g, '<br>');
@@ -176,7 +190,8 @@ export default {
 
       const path = '/api/post-grooming-for-confluence';
       const [err, resp] = await catchify(axios.post(path, {
-        issues: this.issues,
+        title: `Grooming @${this.activeSprint.name}`,
+        issues: this.selectedIssues,
       }));
 
       if (!err) {

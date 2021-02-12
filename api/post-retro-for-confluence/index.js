@@ -1,5 +1,5 @@
 import extractData from './_extract-data';
-import postRetro from './_post-to-confluence';
+import postRetro from './_post-retro';
 
 const { CONFLUENCE_URL } = process.env;
 

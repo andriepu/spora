@@ -25,8 +25,13 @@ export default sprintId => axios.get(`/board/${BOARD_ID}/sprint/${sprintId}/issu
       return {
         id,
         key,
-        description,
-        notes: notes.replace(/\*Notes & Constraints\*\n+/, ''),
+        description: description
+          .replace(/\*(.*?)\*/g, '**$1**')
+          .replace(/_(.*?)_/g, '*$1*'),
+        notes: notes
+          .replace(/\*Notes & Constraints\*\n+/, '')
+          .replace(/\*(.*?)\*/g, '**$1**')
+          .replace(/_(.*?)_/g, '*$1*'),
         summary: fields.summary,
         story_points: fields[STORY_POINTS_KEY],
         acceptances: (fields[ACCEPTANCE_KEY] || '')

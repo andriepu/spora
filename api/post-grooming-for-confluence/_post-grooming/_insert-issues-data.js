@@ -13,7 +13,7 @@ import {
 
 const { JIRA_URL } = process.env;
 
-export default async (id, title, version, issues) => {
+export default async ({ id, issues, lastQnA, title, version }) => {
   const [e1, adf] = await catchify(axios.get(`/content/${id}`, {
     params: {
       expand: 'body.atlas_doc_format',
@@ -42,13 +42,14 @@ export default async (id, title, version, issues) => {
                   const table = tables[i];
 
                   [
+                    ['1.4', lastQnA[issue.key]],
                     ['1.3', issue.fields[CONSTRAINTS_KEY]],
                     ['1.2', issue.fields[IMPLEMENTATION_KEY]],
                     ['1.1', issue.fields[ACCEPTANCE_KEY]],
                     ['1.0', { content: [{ type: 'inlineCard', attrs: { url: new URL(`/browse/${issue.key}`, JIRA_URL).href } }] }],
                     ['2.1', issue.fields[DESCRIPTION_KEY]],
                     ['3.1', { content: [{ type: 'text', text: `${issue.fields[STORY_POINTS_KEY] || ''}` }] }],
-                  ].forEach(([pos, data]) => {
+                  ].filter(Boolean).forEach(([pos, data]) => {
                     if (!data) return;
                     set(table, `${pos.replace(/(\d+)/g, 'content[$1]')}.content`, data.content);
                   });

@@ -62,7 +62,7 @@ const template = `
   </table>
 `;
 
-export default (id, title, version, issues) => axios.put(`/content/${id}`, {
+export default ({ id, issues, title, version }) => axios.put(`/content/${id}`, {
   title,
   type: 'page',
   version: {

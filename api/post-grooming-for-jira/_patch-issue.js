@@ -1,27 +1,19 @@
 import axios from './../_/axios-jira-api';
 
-import buildAdfTitle from './../_/helpers/jira/_build-adf-title';
-
 import {
   ACCEPTANCE_KEY,
+  CONSTRAINTS_KEY,
+  DESCRIPTION_KEY,
+  IMPLEMENTATION_KEY,
   STORY_POINTS_KEY,
 } from './../_/helpers/_customfields';
 
 export default (key, issue) => axios.put(`/issue/${key}`, {
   fields: {
     [ACCEPTANCE_KEY]: issue.acceptances_adf,
-    [STORY_POINTS_KEY]: issue.story_points,
-    description: {
-      type: 'doc',
-      version: 1,
-      content: [
-        ...issue.description_adf.content,
-
-        { type: 'rule' },
-
-        buildAdfTitle('Constraints & Assumptions'),
-        ...issue.notes_adf.content,
-      ].filter(Boolean),
-    },
+    [CONSTRAINTS_KEY]: issue.constraints_adf,
+    [DESCRIPTION_KEY]: issue.description_adf,
+    [IMPLEMENTATION_KEY]: issue.implementation_adf,
+    [STORY_POINTS_KEY]: Number(issue.story_points || 0),
   },
 });

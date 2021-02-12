@@ -14,7 +14,7 @@ import {
 const { JIRA_URL } = process.env;
 
 export default async (id, title, version, issues) => {
-  const [e1, docFormat] = await catchify(axios.get(`/content/${id}`, {
+  const [e1, adf] = await catchify(axios.get(`/content/${id}`, {
     params: {
       expand: 'body.atlas_doc_format',
     },
@@ -33,10 +33,10 @@ export default async (id, title, version, issues) => {
               version: 1,
               type: 'doc',
               content: (() => {
-                const tables = docFormat.content
+                const tables = adf.content
                   .filter(({ type }) => type === 'table');
 
-                if (!tables.length) return docFormat.content;
+                if (!tables.length) return adf.content;
 
                 issues.forEach((issue, i) => {
                   const table = tables[i];
@@ -54,7 +54,7 @@ export default async (id, title, version, issues) => {
                   });
                 });
 
-                return docFormat.content;
+                return adf.content;
               })(),
             }),
             representation: 'atlas_doc_format',

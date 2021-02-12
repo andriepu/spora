@@ -1,3 +1,4 @@
+import catchify from 'catchify';
 import getGroomingData from './_get-grooming-data';
 import patchIssue from './_patch-issue';
 
@@ -9,7 +10,9 @@ export default async (req, res) => {
   const data = await getGroomingData(docId);
 
   await data.reduce(async (promise, issue) => {
-    await patchIssue(issue.key, issue);
+    const [e1] = await catchify(patchIssue(issue.key, issue));
+    if (e1) console.error(e1.response.data);
+
     await promise;
   }, Promise.resolve());
 

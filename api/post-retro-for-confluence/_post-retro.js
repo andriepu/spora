@@ -1,65 +1,15 @@
 import { format } from 'date-fns';
-
 import axios from '../_/axios-confluence';
+import buildPageInfo, { buildParticipants } from './../_/helpers/confluence/build-page-info';
+import normalize from './../_/helpers/confluence/normalize';
+
 
 const {
   CONFLUENCE_RETRO_PARENT_ID,
   SPACE_KEY,
-  SQUAD_NAME,
-  MEMBERS,
 } = process.env;
 
-const members = MEMBERS.split(',')
-  .reduce((acc, m) => {
-    const [id, emailName] = m.split('#');
-    return { ...acc, [emailName]: id };
-  }, {});
-
-const normalize = str => str
-  .replace(/\n/g, '')
-  .replace(/\s+/g, ' ')
-  .replace(/>\s+</g, '><')
-  .trim()
-  .replace(/&/g, '&amp;');
-
-const createParticipants = (participants, { wrapBy = '' } = {}) => (
-  participants.map(emailName => (`
-    ${wrapBy}
-      ${members[emailName]
-        ? `<ac:link><ri:user ri:account-id="${members[emailName]}" /></ac:link>`
-        : emailName}
-    ${[...wrapBy.split('>').reverse().filter(Boolean), ''].join('>').replace(/(<)/g, '$1/')}
-  `)).join('\n')
-);
-
-const createInfo = ({ date, participants }) => {
-  return `
-  <ac:structured-macro ac:name="expand" ac:schema-version="1" data-layout="full-width">
-    <ac:parameter ac:name="title">Retrospective Information</ac:parameter>
-    <ac:rich-text-body>
-      <p><strong>Date</strong> </p>
-      <ul>
-         <li>
-            <p><time datetime="${format(new Date(date), 'yyyy-MM-dd')}" /> </p>
-         </li>
-      </ul>
-      <p><strong>Team </strong></p>
-      <ul>
-         <li>
-            <p>${SQUAD_NAME}</p>
-         </li>
-      </ul>
-      <p><strong>Participants</strong></p>
-      <ul>
-        ${createParticipants(participants, { wrapBy: '<li><p>' })}
-      </ul>
-      <p />
-    </ac:rich-text-body>
-  </ac:structured-macro>
-  `;
-};
-
-const createTable = ({ contents }) => {
+const buildRetroTable = ({ contents }) => {
   const maxRow = Object.keys(contents).reduce((acc, column) => (
     Math.max(acc, contents[column].length)
   ), 0);
@@ -93,7 +43,7 @@ const createTable = ({ contents }) => {
   `;
 };
 
-const createAction = ({ actions }) => `
+const buildActions = ({ actions }) => `
   <h2>Action items</h2>
   <ac:task-list>
     ${
@@ -101,7 +51,7 @@ const createAction = ({ actions }) => `
         <ac:task>
           <ac:task-id>${idx + 1}</ac:task-id>
           <ac:task-status>incomplete</ac:task-status>
-          <ac:task-body><span class="placeholder-inline-tasks">${action.content} — ${createParticipants(action.pic)}</span></ac:task-body>
+          <ac:task-body><span class="placeholder-inline-tasks">${action.content}${action.pic.length ? ' — ' : ''}${buildParticipants(action.pic)}</span></ac:task-body>
         </ac:task>
       `)
     }
@@ -132,9 +82,9 @@ export default async ({ actions, date, participants, contents }) => {
     body: {
       storage: {
         value: normalize(`
-          ${createInfo({ date, participants })}
-          ${createTable({ contents })}
-          ${createAction({ actions })}
+          ${buildPageInfo({ date, participants })}
+          ${buildRetroTable({ contents })}
+          ${buildActions({ actions })}
         `),
         representation,
       },

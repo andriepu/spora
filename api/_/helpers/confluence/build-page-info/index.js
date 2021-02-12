@@ -1,1 +1,1 @@
-export { default } from './_';
+export { default, buildParticipants } from './_';

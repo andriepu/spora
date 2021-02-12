@@ -1,18 +1,10 @@
 import { format } from 'date-fns';
 import wrapHTML from './../wrap-html';
+import membersByEmail from './../../_members-by-email';
 
-const {
-  MEMBERS,
-  SQUAD_NAME,
-} = process.env;
+const { SQUAD_NAME } = process.env;
 
-const membersByEmail = MEMBERS.split(',')
-  .reduce((acc, m) => {
-    const [id, emailName] = m.split('#');
-    return { ...acc, [emailName]: id };
-  }, {});
-
-const buildParticipants = (participants, { wrapBy = '' } = {}) => (
+export const buildParticipants = (participants, { wrapBy = '' } = {}) => (
   participants.map(emailName => (`
     ${wrapHTML(
       membersByEmail[emailName]

@@ -3,10 +3,12 @@ export default (raw) => {
 
   const actions = json.Actions
     .map(({ content, votes }) => ({
-      content: content.replace(/\nPIC:.*/, ''),
-      pic: (content.match(/\nPIC: (.*)$/g) || [])
-        .map(pics => pics.replace('\nPIC: ', '')
-          .split(/,\s*/),
+      content: content.replace(/\nPIC:(.|\n)*/, '').trim(),
+      pic: (content.match(/\nPIC:[\s\n]*(.*)$/g) || [])
+        .map(pics => pics
+          .replace(/\nPIC:[\s\n]+/, '')
+          .split(/,\s*/)
+          .trim(),
         )[0] || [],
     }));
 

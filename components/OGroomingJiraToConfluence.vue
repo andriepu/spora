@@ -97,8 +97,6 @@ import j2m from 'jira2md';
 import axios from 'axios';
 import catchify from 'catchify';
 
-const { JIRA_URL } = process.env;
-
 export default {
   data: () => ({
     isIssuesFetched: false,
@@ -146,7 +144,7 @@ export default {
       return j2m.jira_to_html(wikiSyntax);
     },
     getIssueUrl (key) {
-      return new URL(`/browse/${key}`, JIRA_URL).href;
+      return new URL(`/browse/${key}`, process.env.JIRA_URL).href;
     },
 
     htmlNewline (str) {

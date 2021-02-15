@@ -123,4 +123,11 @@ export default {
       handler: '~/api/get-recent-groomings',
     },
   ],
+
+  /*
+   * Client env
+   */
+  env: {
+    JIRA_URL: process.env.JIRA_URL,
+  },
 };

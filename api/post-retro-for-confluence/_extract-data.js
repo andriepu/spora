@@ -7,8 +7,7 @@ export default (raw) => {
       pic: (content.match(/\nPIC:[\s\n]*(.*)$/g) || [])
         .map(pics => pics
           .replace(/\nPIC:[\s\n]+/, '')
-          .split(/,\s*/)
-          .trim(),
+          .split(/,\s*/),
         )[0] || [],
     }));
 

@@ -2,20 +2,9 @@ export default {
   server: {
     port: process.env.PORT || 3000,
   },
-  /*
-  ** Nuxt rendering mode
-  ** See https://nuxtjs.org/api/configuration-mode
-  */
+  ssr: false,
   mode: 'universal',
-  /*
-  ** Nuxt target
-  ** See https://nuxtjs.org/api/configuration-target
-  */
   target: 'server',
-  /*
-  ** Headers of the page
-  ** See https://nuxtjs.org/api/configuration-head
-  */
   head: {
     title: 'Scrum Assistant',
     meta: [
@@ -29,53 +18,35 @@ export default {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700&display=swap',
       },
-      {
-        rel: 'stylesheet',
-        href: 'https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css',
-      },
     ],
   },
-  /*
-  ** Global CSS
-  */
   css: [
-    'vuesax/dist/vuesax.css',
+    'primeflex/primeflex.css',
     'codemirror/lib/codemirror.css',
     'codemirror/addon/merge/merge.css',
     'codemirror/theme/idea.css',
     '~/assets/css/styles.scss',
   ],
-  /*
-  ** Plugins to load before mounting the App
-  ** https://nuxtjs.org/guide/plugins
-  */
   plugins: [
-    '~/plugins/vuesax',
     { src: '~plugins/vue-codemirror.js', ssr: false },
   ],
-  /*
-  ** Auto import components
-  ** See https://nuxtjs.org/api/configuration-components
-  */
   components: true,
-  /*
-  ** Nuxt.js dev-modules
-  */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
   ],
-  /*
-  ** Nuxt.js modules
-  */
   modules: [
-    // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
     'nuxt-basic-auth-module',
     'cookie-universal-nuxt',
+    'primevue/nuxt',
   ],
+  primevue: {
+    theme: 'saga-blue',
+    ripple: true,
+    components: ['Menu'],
+    // directives: ['Tooltip','Badge']
+  },
   basic: {
     name: process.env.BASIC_USER,
     pass: process.env.BASIC_PASS,

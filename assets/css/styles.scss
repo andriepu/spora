@@ -7,7 +7,6 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  margin-left: 60px;
 }
 
 h1,
@@ -57,10 +56,6 @@ label {
   margin-left: 40px;
 }
 
-.vs-button {
-  --vs-button-margin: 0;
-}
-
-.vs-select__label {
-  margin-top: 2px;
+.p-menu .p-menuitem-link:focus {
+  box-shadow: none !important;
 }

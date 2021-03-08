@@ -34,7 +34,7 @@ export default {
           label: 'Retrospective',
           items: [
             this.createMenuItem({
-              label: 'Import MetroRetro',
+              label: 'Export MetroRetro',
               icon: 'pi pi-file',
               to: '/retros/import-metroretro',
             }),
@@ -60,9 +60,13 @@ export default {
 <style lang="scss" scoped>
 .o-sidebar {
   position: fixed;
-  top: 2rem;
+  top: 5rem;
   left: 2rem;
   height: 100vh;
+
+  /deep/ .p-menu {
+    padding: 0;
+  }
 }
 
 .o-content {

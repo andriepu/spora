@@ -1,6 +1,5 @@
 <template lang="pug">
-  div asd
-  // o-retro-metroretro
+  o-retro-metroretro
 </template>
 
 <script>

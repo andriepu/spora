@@ -3,78 +3,86 @@
     h2 Export Metro Retro to Confluence
 
     .retro-importer__hint
-      vs-alert(:hidden-content.sync="hintHidden" border color="#348ad6")
-        template(#icon): i.bx.bx-info-circle
-        template(#title) How to Use?
-        ul.retro-importer__hint-items
-          li Make sure #[strong Action Items] area on MetroRetro exacly named with #[strong Actions].
-          li
-            | Copy #[strong JSON] of MetroRetro data from the #[strong Export] menu on the right-top of page.
-            ul
-              li Clik #[strong Export].
-              li Select #[strong JSON] for #[strong Export Format].
-              li Click #[strong View Raw].
-              li Click #[strong Copy To Clipboard].
+      p-accordion
+        p-accordion-tab(header="How to Use?")
+          ul.retro-importer__hint-items
+            li Make sure #[strong Action Items] area on MetroRetro exacly named as #[strong Actions].
+            li
+              | Copy #[strong JSON] of MetroRetro data from the #[strong Export] menu on the right-top of page.
+              ul
+                li Clik #[strong Export].
+                li Select #[strong JSON] for #[strong Export Format].
+                li Click #[strong View Raw].
+                li Click #[strong Copy To Clipboard].
 
-          li Paste here.
-          li Click #[i.bx.bx-export] #[strong Export to Confluence].
+            li Paste here.
+            li Click #[i.bx.bx-export] #[strong Export to Confluence].
 
     .retro-importer__editor: codemirror(
       v-model="json"
-      :options="cmOption"
+      :options="$options.CM_OPTIONS"
       )
 
-    div(style="margin-top:24px")
-      vs-button(
+    .p-mt-3
+      p-button.p-button-outlined(
         :disabled="!json"
-        color="#489ae4"
+        icon="pi pi-angle-double-right"
+        label="Export to Confluence"
+        type="button"
         @click.native="doSaveConfluence"
-        ): | #[i.bx.bx-export] &nbsp; Export to Confluence
+        )
 </template>
 
 <script>
+import PButton from 'primevue/button';
+import PAccordion from 'primevue/accordion';
+import PAccordionTab from 'primevue/accordiontab';
+
 import axios from 'axios';
 import catchify from 'catchify';
 
 export default {
+  components: {
+    PButton,
+    PAccordion,
+    PAccordionTab,
+  },
+
+  CM_OPTIONS: {
+    tabSize: 4,
+    styleActiveLine: true,
+    lineNumbers: true,
+    line: true,
+    foldGutter: true,
+    styleSelectedText: true,
+    mode: 'text/javascript',
+    keyMap: 'sublime',
+    matchBrackets: true,
+    showCursorWhenSelecting: true,
+    theme: 'idea',
+    extraKeys: { Ctrl: 'autocomplete' },
+    hintOptions: {
+      completeSingle: false,
+    },
+  },
+
   data: () => ({
     hintHidden: true,
 
     json: '',
-    cmOption: {
-      tabSize: 4,
-      styleActiveLine: true,
-      lineNumbers: true,
-      line: true,
-      foldGutter: true,
-      styleSelectedText: true,
-      mode: 'text/javascript',
-      keyMap: 'sublime',
-      matchBrackets: true,
-      showCursorWhenSelecting: true,
-      theme: 'idea',
-      extraKeys: { Ctrl: 'autocomplete' },
-      hintOptions: {
-        completeSingle: false,
-      },
-    },
   }),
 
   methods: {
     async doSaveConfluence () {
-      const loading = this.$vs.load({
-        text: 'Exporting to Confluence...',
-      });
-
-      const path = '/api/post-retro-for-confluence';
-      const [err, resp] = await catchify(await axios.post(path, {
-        json: window.btoa(this.json),
-      }));
-
-      loading.close();
+      const [err, resp] = await catchify(
+        await axios.post('/api/post-retro-for-confluence', {
+          json: window.btoa(this.json),
+        }),
+      );
 
       if (!err) {
-        const notif = this.$vs.notification({
+        console.log('sukses', resp.data.url);
+        /* const notif = this.$vs.notification({
           position: 'bottom-right',
           duration: 10000,
           color: '#363448',
@@ -95,7 +103,9 @@ export default {
             a.click();
           },
         });
+        */
       } else {
+        /*
         this.$vs.notification({
           position: 'bottom-right',
           duration: 5000,
@@ -103,6 +113,7 @@ export default {
           title: 'Export Failed!',
           text: err.message,
         });
+        */
       }
     },
   },
@@ -125,6 +136,10 @@ export default {
   /deep/ {
     .CodeMirror {
       height: 450px !important;
+    }
+
+    .CodeMirror-linenumber {
+      padding-right: 1rem;
     }
 
     .CodeMirror-hscrollbar,

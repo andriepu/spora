@@ -44,7 +44,10 @@ export default {
   primevue: {
     theme: 'saga-blue',
     ripple: true,
-    components: ['Menu'],
+    components: [
+      'Button',
+      'Menu',
+    ],
     // directives: ['Tooltip','Badge']
   },
   basic: {

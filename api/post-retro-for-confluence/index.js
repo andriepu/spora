@@ -8,9 +8,11 @@ export default async (req, res) => {
 
   const json = Buffer.from(jsonBase64, 'base64').toString();
 
-  const { date, actions, participants, contents } = extractData(json);
+  const { date, notes, actions, participants, contents } = extractData(json);
+
   const data = await postRetro({
     actions,
+    notes,
     date,
     contents,
     participants,

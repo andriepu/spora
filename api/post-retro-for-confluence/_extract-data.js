@@ -1,15 +1,12 @@
 export default (raw) => {
   const json = JSON.parse(raw);
 
-  const actions = json.Actions
-    .map(({ content, votes }) => ({
-      content: content.replace(/\nPIC:(.|\n)*/, '').trim(),
-      pic: (content.match(/\nPIC:[\s\n]*(.*)$/g) || [])
-        .map(pics => pics
-          .replace(/\nPIC:[\s\n]+/, '')
-          .split(/,\s*/),
-        )[0] || [],
-    }));
+  const actionsAndNotes = json.Actions
+    .reduce(({ actions, notes }, { content }) => (
+      content.match(/(\s+|^)@[\w.]+(\s+|$)/g)
+        ? { notes, actions: [...actions, content] }
+        : { actions, notes: [...notes, content] }
+    ), { actions: [], notes: [] });
 
   const participants = (raw.match(/"email": "(.*)@/g) || [])
     .map(emaildata => emaildata.replace(/.*: "([\w.]+)@/, '$1'))
@@ -29,7 +26,7 @@ export default (raw) => {
     .filter((item, i, arr) => arr.indexOf(item) === i);
 
   return {
-    actions,
+    ...actionsAndNotes,
     date,
     contents,
     participants,

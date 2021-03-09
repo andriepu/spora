@@ -1,5 +1,5 @@
 import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
-import { MEMBERS } from '~/api/constants';
+import { MEMBERS } from '~/api/constants/members';
 import buildParticipants from '~/api/utils/adf/build-participants';
 
 const { SQUAD_NAME } = process.env;
@@ -18,5 +18,7 @@ export default ({ participants = Object.keys(MEMBERS), date }) => (
 
     adf.p(adf.strong('Participants')),
     adf.ul(...buildParticipants(participants).map(p => adf.listItem([p]))),
+
+    adf.p(' '),
   )
 );

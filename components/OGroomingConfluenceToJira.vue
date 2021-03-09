@@ -53,7 +53,7 @@ export default {
       text: 'Preparing data...',
     });
 
-    const [err, resp] = await catchify(axios.get('/api/get-recent-groomings'));
+    const [err, resp] = await catchify(axios.get('/api/confluence/groomings'));
 
     loading.close();
 

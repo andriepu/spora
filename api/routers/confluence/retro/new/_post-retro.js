@@ -57,7 +57,7 @@ const buildRetroTable = (contents) => {
 
 export default ({ actions, notes, date, participants, contents }) => (
   axios.post('/content', {
-    title: `Retrospective @${date}${Date.now()}`,
+    title: `Retrospective ${date}`,
     type: 'page',
     space: { key: SPACE_KEY },
     ancestors: [{ id: CONFLUENCE_RETRO_PARENT_ID }],

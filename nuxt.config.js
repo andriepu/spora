@@ -57,16 +57,8 @@ export default {
     //   handler: '~/api/post-grooming-for-jira',
     // },
     // {
-    //   path: '/api/get-sprints',
-    //   handler: '~/api/get-sprints',
-    // },
-    // {
     //   path: '/api/get-sprint-issues',
     //   handler: '~/api/get-sprint-issues',
-    // },
-    // {
-    //   path: '/api/get-recent-groomings',
-    //   handler: '~/api/get-recent-groomings',
     // },
   ],
 

@@ -9,7 +9,6 @@ export default () => {
     .then(({ data }) => (
       data.results
         .slice(-limit)
-        .filter(({ title }) => title.startsWith('Grooming @'))
         .map(({ id, title }) => ({ id, title }))
         .reverse()
     ));

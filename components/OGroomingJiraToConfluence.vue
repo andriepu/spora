@@ -12,6 +12,7 @@
 
     .p-fluid.p-mb-3: .p-field
       label(for="sprintDropdown") Select section for Grooming
+
       p-dropdown(
         v-model="selectedSprint"
         filter
@@ -38,7 +39,7 @@
               :disabled="!selectedIssues.length"
               icon="pi pi-plus"
               label="Export for Grooming"
-              @click="doPrepareExport"
+              @click="doExportGrooming"
               )
 
             p-overlay-panel(ref="op")
@@ -166,15 +167,27 @@ export default {
   }),
 
   async mounted () {
-    const [err, resp] = await catchify(axios.get('/api/get-sprints', {
-      params: { state: 'future' },
-    }));
+    const loader = this.$loading.show();
+
+    const [err, resp] = await catchify(Promise.all([
+      axios.get('/api/jira/sprints', { params: { state: 'future' } }),
+      axios.get('/api/confluence/groomings'),
+    ]));
+
+    loader.hide();
 
     if (err) {
-      // TODO
+      this.$toast.add({
+        severity: 'error',
+        summary: 'Fetch Data Failed!',
+        detail: err.message,
+        life: 3000,
+      });
     } else {
-      const { futures } = resp.data;
-      this.futuresSprint = futures;
+      const [{ data: sprints }, { data: groomings }] = resp;
+
+      this.futuresSprint = sprints;
+      this.groomings = groomings;
     }
   },
 
@@ -186,9 +199,13 @@ export default {
     async doGetIssues (sprintId) {
       this.isIssuesFetched = false;
 
-      const [err, resp] = await catchify(axios.get('/api/get-sprint-issues', {
-        params: { sprintId },
-      }));
+      const loader = this.$loading.show();
+
+      const [err, resp] = await catchify(
+        axios.get('/api/jira/sprints/issues', { params: { sprintId } }),
+      );
+
+      loader.hide();
 
       this.isIssuesFetched = true;
 
@@ -198,19 +215,18 @@ export default {
           (b.story_points || Infinity) - (a.story_points || Infinity)
         ));
       } else {
-        /* this.$vs.notification({
-          position: 'bottom-right',
-          duration: 5000,
-          color: 'danger',
-          title: 'Get Issues Failed!',
-          text: err.message,
-        }); */
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Get Issues Failed!',
+          detail: err.message,
+          life: 3000,
+        });
       }
     },
 
     async doExportGrooming () {
       const [err, resp] = await catchify(
-        axios.post('/api/post-grooming-document', {
+        axios.post('/api/confluence/groomings/new', {
           issues: this.selectedIssues.map(({ key }) => key),
         }),
       );
@@ -219,25 +235,6 @@ export default {
         // TODO
       } else {
         console.log('sukses', resp.data.url);
-      }
-    },
-
-    async doPrepareExport (e) {
-      this.$refs.op.toggle(e);
-
-      if (!this.groomings.length) {
-        const [err, resp] = await catchify(
-          axios.get('/api/get-recent-groomings'),
-        );
-
-        if (err) {
-          // TODO
-        } else {
-          this.groomings = resp.data.map(grooming => ({
-            ...grooming,
-            title$short: grooming.title.replace(/^.*- /, ''),
-          }));
-        }
       }
     },
   },

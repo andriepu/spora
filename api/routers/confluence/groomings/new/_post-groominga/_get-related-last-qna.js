@@ -12,7 +12,6 @@ export default async (issues) => {
     params: { expand: 'body.atlas_doc_format' },
   }).then(({ data }) => (
     data.results
-      .filter(({ title }) => title.startsWith('Grooming @'))
       .pop()
   )));
 

@@ -1,5 +1,5 @@
 import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
-import { MEMBERS } from '~/api/constants';
+import { MEMBERS } from '~/api/constants/members';
 
 export default participants => (
   participants.map(emailName => MEMBERS[emailName]

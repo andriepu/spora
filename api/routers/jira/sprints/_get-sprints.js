@@ -13,5 +13,9 @@ export default ({ state }) => axios.get(`/board/${BOARD_ID}/sprint`, {
       ...(sprint.state === 'active'
         ? { active: sprint }
         : { futures: [...acc.futures, sprint] }),
-    }), { futures: [], active: null })
-));
+    }), { futures: [], active: undefined })
+)).then(({ futures, active }) => {
+  if (!active && futures.length) return futures;
+  if (active && !futures.length) return active;
+  return { futures, active };
+});

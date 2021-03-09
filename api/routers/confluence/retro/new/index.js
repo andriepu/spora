@@ -3,7 +3,7 @@ import postRetro from './_post-retro';
 
 const { CONFLUENCE_URL } = process.env;
 
-export default async (req, res) => {
+export const post = async (req, res) => {
   const { json: jsonBase64 } = req.body;
 
   const json = Buffer.from(jsonBase64, 'base64').toString();

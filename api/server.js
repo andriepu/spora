@@ -1,6 +1,7 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import { API_BASEPATH } from '~/api/constants/comms';
 
 import queryParser from './middlewares/query-parser';
 import responseJson from './middlewares/response-json';
@@ -16,16 +17,14 @@ const app = express();
   bodyParser.json(),
   queryParser,
   responseJson,
-  apiGuard,
+  // apiGuard,
 ].forEach((middleware) => {
   app.use(middleware);
 });
 
-routers.forEach(([base, router]) => {
-  app.use(base, router);
-});
+app.use('/', routers);
 
 export default {
-  path: '/api',
+  path: API_BASEPATH,
   handler: app,
 };

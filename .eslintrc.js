@@ -19,6 +19,7 @@ module.exports = {
     curly: [2, 'multi-line'],
     'import/extensions': 'off',
     'import/namespace': ['error', { allowComputed: true }],
+    'import/order': 'off',
     'import/prefer-default-export': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',

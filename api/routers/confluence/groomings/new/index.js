@@ -13,9 +13,8 @@ export const post = async (req, res) => {
   });
 
   res.json({
-    issuesDetail,
-    // id: data.id,
-    // title: data.title,
-    // url: new URL(`/wiki${data._links.webui}`, CONFLUENCE_URL).href,
+    id: data.id,
+    title: data.title,
+    url: new URL(`/wiki${data._links.webui}`, CONFLUENCE_URL).href,
   });
 };

@@ -8,7 +8,6 @@
           li Select sprint section that containing tasks that ready for grooming.
           li Select tasks that you want to take for grooming.
           li Click #[strong Export for Grooming].
-          li Choose whether tasks should be appended to #[strong existing document] or #[strong create a new document].
 
     .p-fluid.p-mb-3: .p-field
       label(for="sprintDropdown") Select section for Grooming
@@ -35,49 +34,23 @@
       template(v-else)
         p-toolbar
           template(#left)
-            p-button(
+            p-button.p-mr-3(
               :disabled="!selectedIssues.length"
               icon="pi pi-plus"
               label="Export for Grooming"
               @click="doExportGrooming"
               )
 
-            p-overlay-panel(ref="op")
-              .p-mb-3 Where do you want to export selected tasks?
-
-              .p-d-flex.p-ai-center.p-mb-2
-                p-radio-button.p-mr-2(
-                  v-model="isExportNew"
-                  id="createNew"
-                  :value="true"
-                  )
-                label(for="createNew") New Document
-
-              .p-d-flex.p-ai-center
-                p-radio-button.p-mr-2(
-                  v-model="isExportNew"
-                  id="addToExisting"
-                  :value="false"
-                  )
-
-                label(for="addToExisting") Existing Document
-
-                p-dropdown(
-                  v-model="selectedGrooming"
-                  :disabled="isExportNew"
-                  :options="groomings"
-                  optionLabel="title"
-                  optionValue="id"
-                  placeholder="Select existing document"
-                  style="width:220px"
-                  )
-
-              p-divider
-
-              p-button.p-button-sm(
-                label="Export"
-                @click="doExportGrooming"
-                )
+            template(v-if="result")
+              span
+                | #[i.pi.pi-check.p-mr-1]
+                | Click
+                a.p-mx-1(
+                  v-tooltip.top="result.title"
+                  :href="result.url"
+                  target="_blank"
+                  ) here
+                | to visit the page.
 
         .jira-grooming__list
           p-data-table(
@@ -159,20 +132,28 @@ export default {
 
     issues: [],
     futuresSprint: [],
-    groomings: [],
 
     selectedGrooming: null,
     selectedIssues: [],
     selectedSprint: null,
+
+    result: null,
   }),
+
+  watch: {
+    selectedIssues: {
+      handler () {
+        this.result = null;
+      },
+    },
+  },
 
   async mounted () {
     const loader = this.$loading.show();
 
-    const [err, resp] = await catchify(Promise.all([
+    const [err, resp] = await catchify(
       axios.get('/api/jira/sprints', { params: { state: 'future' } }),
-      axios.get('/api/confluence/groomings'),
-    ]));
+    );
 
     loader.hide();
 
@@ -184,10 +165,7 @@ export default {
         life: 3000,
       });
     } else {
-      const [{ data: sprints }, { data: groomings }] = resp;
-
-      this.futuresSprint = sprints;
-      this.groomings = groomings;
+      this.futuresSprint = resp.data;
     }
   },
 
@@ -209,18 +187,18 @@ export default {
 
       this.isIssuesFetched = true;
 
-      if (!err) {
-        this.selectedIssues = [];
-        this.issues = resp.data.sort((a, b) => (
-          (b.story_points || Infinity) - (a.story_points || Infinity)
-        ));
-      } else {
+      if (err) {
         this.$toast.add({
           severity: 'error',
           summary: 'Get Issues Failed!',
           detail: err.message,
           life: 3000,
         });
+      } else {
+        this.selectedIssues = [];
+        this.issues = resp.data.sort((a, b) => (
+          (b.story_points || Infinity) - (a.story_points || Infinity)
+        ));
       }
     },
 
@@ -232,9 +210,21 @@ export default {
       );
 
       if (err) {
-        // TODO
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Export Grooming Failed!',
+          detail: err.message,
+          life: 3000,
+        });
       } else {
-        console.log('sukses', resp.data.url);
+        this.result = resp.data;
+
+        this.$toast.add({
+          life: 3000,
+          severity: 'success',
+          summary: 'Create Retro Success!',
+          detail: 'Retro document is successfully created.',
+        });
       }
     },
   },

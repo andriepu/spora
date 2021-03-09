@@ -94,7 +94,14 @@ export default {
 
       loader.hide();
 
-      if (!err) {
+      if (err) {
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Create Retro Failed!',
+          detail: err.message,
+          life: 3000,
+        });
+      } else {
         this.result = resp.data;
 
         this.$toast.add({
@@ -102,13 +109,6 @@ export default {
           severity: 'success',
           summary: 'Create Retro Success!',
           detail: 'Retro document is successfully created.',
-        });
-      } else {
-        this.$toast.add({
-          severity: 'error',
-          summary: 'Create Retro Failed!',
-          detail: err.message,
-          life: 3000,
         });
       }
     },

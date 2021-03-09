@@ -21,14 +21,12 @@ export default {
     ],
   },
   css: [
-    'primeflex/primeflex.css',
-    'codemirror/lib/codemirror.css',
-    'codemirror/addon/merge/merge.css',
-    'codemirror/theme/idea.css',
     '~/assets/css/styles.scss',
   ],
   plugins: [
+    { src: '~plugins/primevue.js', ssr: false },
     { src: '~plugins/vue-codemirror.js', ssr: false },
+    { src: '~plugins/vue-loading-overlay.js', ssr: false },
   ],
   components: true,
   buildModules: [
@@ -39,68 +37,39 @@ export default {
     '@nuxtjs/dotenv',
     'nuxt-basic-auth-module',
     'cookie-universal-nuxt',
-    'primevue/nuxt',
   ],
-  primevue: {
-    theme: 'saga-blue',
-    ripple: true,
-    components: [
-      'Button',
-      'Menu',
-    ],
-    // directives: ['Tooltip','Badge']
-  },
   basic: {
     name: process.env.BASIC_USER,
     pass: process.env.BASIC_PASS,
     enabled: true,
   },
-  /*
-  ** Build configuration
-  ** See https://nuxtjs.org/api/configuration-build/
-  */
-  build: {
-  },
+
+  build: {},
 
   serverMiddleware: [
-    '~/api/_cookie-parser',
-    '~/api/_body-parser',
-    '~/api/_body-parser-json',
-    '~/api/_query-parser',
-    '~/api/_response',
-    {
-      path: '/api',
-      handler: '~/api/_api-guard',
-    },
-    {
-      path: '/api/post-retro-for-confluence',
-      handler: '~/api/post-retro-for-confluence',
-    },
-    {
-      path: '/api/post-grooming-for-confluence',
-      handler: '~/api/post-grooming-for-confluence',
-    },
-    {
-      path: '/api/post-grooming-for-jira',
-      handler: '~/api/post-grooming-for-jira',
-    },
-    {
-      path: '/api/get-sprints',
-      handler: '~/api/get-sprints',
-    },
-    {
-      path: '/api/get-sprint-issues',
-      handler: '~/api/get-sprint-issues',
-    },
-    {
-      path: '/api/get-recent-groomings',
-      handler: '~/api/get-recent-groomings',
-    },
+    '~/api',
+    // {
+    //   path: '/api/post-grooming-document',
+    //   handler: '~/api/post-grooming-document',
+    // },
+    // {
+    //   path: '/api/post-grooming-for-jira',
+    //   handler: '~/api/post-grooming-for-jira',
+    // },
+    // {
+    //   path: '/api/get-sprints',
+    //   handler: '~/api/get-sprints',
+    // },
+    // {
+    //   path: '/api/get-sprint-issues',
+    //   handler: '~/api/get-sprint-issues',
+    // },
+    // {
+    //   path: '/api/get-recent-groomings',
+    //   handler: '~/api/get-recent-groomings',
+    // },
   ],
 
-  /*
-   * Client env
-   */
   env: {
     JIRA_URL: process.env.JIRA_URL,
   },

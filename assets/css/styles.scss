@@ -53,10 +53,15 @@ label {
   margin-right: 16px;
 }
 
-.__nuxt-error-page {
-  margin-left: 40px;
-}
-
 .p-menu .p-menuitem-link:focus {
   box-shadow: none !important;
+}
+
+.p-tooltip {
+  width: auto !important;
+  max-width: unset !important;
+
+  &-text {
+    white-space: nowrap !important;
+  }
 }

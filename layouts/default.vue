@@ -1,13 +1,23 @@
 <template lang="pug">
   div
     .o-sidebar
-      Menu(:model="items")
+      p-menu(:model="items")
     .o-content: nuxt
+
+    p-toast(position="bottom-right")
 </template>
 
 <script>
+import PMenu from 'primevue/menu';
+import PToast from 'primevue/toast';
+
 export default {
   middleware: 'auth',
+
+  components: {
+    PMenu,
+    PToast,
+  },
 
   computed: {
     items () {
@@ -36,7 +46,7 @@ export default {
             this.createMenuItem({
               label: 'Export MetroRetro',
               icon: 'pi pi-file',
-              to: '/retros/import-metroretro',
+              to: '/retros/export-metroretro',
             }),
           ],
         },

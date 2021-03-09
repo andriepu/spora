@@ -1,4 +1,4 @@
-import axios from '../../_/axios-confluence';
+import axios from '~/api/modules/axios/--confluence';
 const { CONFLUENCE_GROOMING_PARENT_ID } = process.env;
 
 export default title => axios.get(`/content/${CONFLUENCE_GROOMING_PARENT_ID}/child/page`, {

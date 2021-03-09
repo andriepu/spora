@@ -1,15 +1,14 @@
 import { set } from 'lodash';
 import catchify from 'catchify';
 
-import axios from '../../_/axios-confluence';
-
+import axios from '~/api/modules/axios/--confluence';
 import {
   ACCEPTANCE_KEY,
   CONSTRAINTS_KEY,
   DESCRIPTION_KEY,
   IMPLEMENTATION_KEY,
   STORY_POINTS_KEY,
-} from '../../_/helpers/_customfields';
+} from '~/api/constants/customfields';
 
 const { JIRA_URL } = process.env;
 

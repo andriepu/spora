@@ -1,12 +1,11 @@
-import axios from './../_/axios-jira-api';
-
+import axios from '~/api/modules/axios/--jira';
 import {
   ACCEPTANCE_KEY,
   CONSTRAINTS_KEY,
   DESCRIPTION_KEY,
   IMPLEMENTATION_KEY,
   STORY_POINTS_KEY,
-} from './../_/helpers/_customfields';
+} from '~/api/constants/customfields';
 
 export default (key, issue) => axios.put(`/issue/${key}`, {
   fields: {

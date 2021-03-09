@@ -1,6 +1,6 @@
-const { MEMBERS } = process.env;
+const { MEMBERS: MEMBERS_RAW } = process.env;
 
-export default MEMBERS.split(',')
+export const MEMBERS = MEMBERS_RAW.split(',')
   .reduce((acc, m) => {
     const [id, emailName] = m.split('#');
     return { ...acc, [emailName]: id };

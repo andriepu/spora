@@ -1,6 +1,5 @@
-import axios from '../_/axios-jira-api';
-
-import * as customfields from '../_/helpers/_customfields';
+import axios from '~/api/modules/axios/--jira';
+import * as customfields from '~/api/constants/customfields';
 
 const { PROJECT_KEY } = process.env;
 

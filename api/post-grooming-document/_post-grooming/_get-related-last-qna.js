@@ -1,5 +1,5 @@
 import catchify from 'catchify';
-import axios from '../../_/axios-confluence';
+import axios from '~/api/modules/axios/--confluence';
 
 const { CONFLUENCE_GROOMING_PARENT_ID } = process.env;
 

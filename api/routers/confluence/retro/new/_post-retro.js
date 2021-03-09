@@ -1,7 +1,7 @@
 import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
-import axios from '../_/axios-confluence';
-import buildPageInfo from './../_/helpers/confluence/_build-page-info';
-import convertAdfMention from './../_/helpers/confluence/_convert-adf-mention';
+import axios from '~/api/modules/axios/--confluence';
+import buildPageInfo from '~/api/utils/adf/build-page-info';
+import convertMention from '~/api/utils/adf/convert-mention';
 
 const {
   CONFLUENCE_RETRO_PARENT_ID,
@@ -12,7 +12,7 @@ const buildNotes = notes => [
   adf.heading({ level: 2 })(adf.text('Notes')),
   adf.ul(
     ...notes.map(note => (
-      adf.listItem(convertAdfMention(note.replace(/\n+/g, ' ')))
+      adf.listItem(convertMention(note.replace(/\n+/g, ' ')))
     )),
   ),
 ];
@@ -22,7 +22,7 @@ const buildActions = actions => [
   adf.taskList({ localId: '' })(
     ...actions.map((action, idx) => (
       adf.taskItem({ localId: `${idx}`, state: 'TODO' })(
-        ...convertAdfMention(action.replace(/\n+/g, ' ')),
+        ...convertMention(action.replace(/\n+/g, ' ')),
       )
     )),
   ),
@@ -57,7 +57,7 @@ const buildRetroTable = (contents) => {
 
 export default ({ actions, notes, date, participants, contents }) => (
   axios.post('/content', {
-    title: `Test Retrospective @${date}`,
+    title: `Retrospective @${date}${Date.now()}`,
     type: 'page',
     space: { key: SPACE_KEY },
     ancestors: [{ id: CONFLUENCE_RETRO_PARENT_ID }],

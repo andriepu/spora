@@ -1,9 +1,8 @@
-import axios from '../_/axios-jira-agile';
-
+import axios from '~/api/modules/axios/--jira-agile';
 import {
   ACCEPTANCE_KEY,
   STORY_POINTS_KEY,
-} from '../_/helpers/_customfields';
+} from '~/api/constants/customfields';
 
 const { BOARD_ID } = process.env;
 

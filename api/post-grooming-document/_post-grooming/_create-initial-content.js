@@ -1,7 +1,7 @@
-import axios from '../../_/axios-confluence';
+import axios from '~/api/modules/axios/--confluence';
 
-import buildPageInfo from '../../_/helpers/confluence/_build-page-info';
-import normalizeHtml from '../../_/helpers/_normalize-html';
+import buildPageInfo from '~/api/utils/adf/build-page-info';
+// import normalizeHtml from '../../_/helpers/_normalize-html';
 
 const template = `
   <table data-layout="default">
@@ -70,10 +70,10 @@ export default ({ id, issues, title, version }) => axios.put(`/content/${id}`, {
   },
   body: {
     storage: {
-      value: normalizeHtml(`
-        ${buildPageInfo({ date: new Date() })}
-        ${issues.map(issue => template).join('')}
-      `),
+      // value: normalizeHtml(`
+      //   ${buildPageInfo({ date: new Date() })}
+      //   ${issues.map(issue => template).join('')}
+      // `),
       representation: 'storage',
     },
   },

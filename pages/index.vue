@@ -1,6 +1,5 @@
 <template lang="pug">
-  div
-  //.p-d-flex.p-ai-center.p-jc-center.p-flex-column(style="height:100vh")
+  .p-d-flex.p-ai-center.p-jc-start.p-flex-column.p-mt-6.p-pt-6
     i.pi.pi-exclamation-triangle(style="font-size:1.5rem")
     .p-mt-2 Under Construction
 </template>

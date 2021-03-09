@@ -1,16 +1,10 @@
 import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
-import membersByEmail from './../_members-by-email';
+import { MEMBERS } from '~/api/constants';
+import buildParticipants from '~/api/utils/adf/build-participants';
 
 const { SQUAD_NAME } = process.env;
 
-export const buildParticipants = participants => (
-  participants.map(emailName => membersByEmail[emailName]
-    ? adf.mention({ id: membersByEmail[emailName] })
-    : adf.text(`@${emailName}`),
-  )
-);
-
-export default ({ participants = Object.keys(membersByEmail), date }) => (
+export default ({ participants = Object.keys(MEMBERS), date }) => (
   adf.expand({ title: 'Page Information' })(
     adf.p(adf.strong('Date')),
     adf.ul(adf.listItem([

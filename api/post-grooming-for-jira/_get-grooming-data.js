@@ -1,5 +1,5 @@
 import catchify from 'catchify';
-import axios from '../_/axios-confluence';
+import axios from '~/api/modules/axios/--confluence';
 
 export default async (contentId) => {
   const [e1, groomingDoc] = await catchify(axios.get(`/content/${contentId}`, {

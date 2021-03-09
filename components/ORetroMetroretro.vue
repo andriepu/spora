@@ -3,40 +3,51 @@
     h2 Export Metro Retro to Confluence
 
     .retro-importer__hint
-      p-accordion
-        p-accordion-tab(header="How to Use?")
-          ul.retro-importer__hint-items
+        p-fieldset(collapsed toggleable legend="How to Use?")
+          ul
             li Make sure #[strong Action Items] area on MetroRetro exacly named as #[strong Actions].
             li
-              | Copy #[strong JSON] of MetroRetro data from the #[strong Export] menu on the right-top of page.
+              | Copy #[strong JSON] of MetroRetro data.
               ul
-                li Clik #[strong Export].
-                li Select #[strong JSON] for #[strong Export Format].
+                li Click #[strong Export] that located on the right-top of page.
+                li Select #[strong JSON] for the Export Format.
                 li Click #[strong View Raw].
                 li Click #[strong Copy To Clipboard].
 
             li Paste here.
-            li Click #[i.bx.bx-export] #[strong Export to Confluence].
+            li Click #[strong Create Retro Document].
 
     .retro-importer__editor: codemirror(
       v-model="json"
       :options="$options.CM_OPTIONS"
       )
 
-    .p-mt-3
-      p-button.p-button-outlined(
-        :disabled="!json"
+    .p-d-flex.p-ai-center.p-mt-3
+      p-button.p-mr-4(
+        :class="result ? 'p-button-success' : ''"
+        :disabled="!json || result"
         icon="pi pi-angle-double-right"
-        label="Export to Confluence"
+        label="Create Retro Document"
         type="button"
-        @click.native="doSaveConfluence"
+        @click.native="doCreateRetro"
         )
+
+      template(v-if="result")
+        span
+          | #[i.pi.pi-check.p-mr-1]
+          | Click
+          a.p-mx-1(
+            v-tooltip.top="result.title"
+            :href="result.url"
+            target="_blank"
+            ) here
+          | to visit the page.
 </template>
 
 <script>
 import PButton from 'primevue/button';
-import PAccordion from 'primevue/accordion';
-import PAccordionTab from 'primevue/accordiontab';
+import PMessage from 'primevue/message';
+import PFieldset from 'primevue/fieldset';
 
 import axios from 'axios';
 import catchify from 'catchify';
@@ -44,8 +55,8 @@ import catchify from 'catchify';
 export default {
   components: {
     PButton,
-    PAccordion,
-    PAccordionTab,
+    PMessage,
+    PFieldset,
   },
 
   CM_OPTIONS: {
@@ -67,53 +78,38 @@ export default {
   },
 
   data: () => ({
-    hintHidden: true,
-
     json: '',
+    result: null,
   }),
 
   methods: {
-    async doSaveConfluence () {
+    async doCreateRetro () {
+      const loader = this.$loading.show();
+
       const [err, resp] = await catchify(
-        await axios.post('/api/post-retro-for-confluence', {
+        axios.post('/api/confluence/retro/new', {
           json: window.btoa(this.json),
         }),
       );
 
+      loader.hide();
+
       if (!err) {
-        console.log('sukses', resp.data.url);
-        /* const notif = this.$vs.notification({
-          position: 'bottom-right',
-          duration: 10000,
-          color: '#363448',
-          title: 'Export Success!',
-          text: `"${resp.data.title}" has been exported to Confluence. Click here to Visit the page.`,
-          onClick: () => {
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.setAttribute('target', '_blank');
-            a.setAttribute('href', resp.data.url);
-            a.addEventListener('click', (e) => {
-              a.remove();
-              notif.close();
-            });
+        this.result = resp.data;
 
-            document.body.append(a);
-
-            a.click();
-          },
+        this.$toast.add({
+          life: 3000,
+          severity: 'success',
+          summary: 'Create Retro Success!',
+          detail: 'Retro document is successfully created.',
         });
-        */
       } else {
-        /*
-        this.$vs.notification({
-          position: 'bottom-right',
-          duration: 5000,
-          color: 'danger',
-          title: 'Export Failed!',
-          text: err.message,
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Create Retro Failed!',
+          detail: err.message,
+          life: 3000,
         });
-        */
       }
     },
   },

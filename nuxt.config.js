@@ -28,7 +28,9 @@ export default {
     { src: '~plugins/vue-codemirror.js', ssr: false },
     { src: '~plugins/vue-loading-overlay.js', ssr: false },
   ],
-  components: true,
+  components: [
+    { path: '~/components', extensions: ['vue'] },
+  ],
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',

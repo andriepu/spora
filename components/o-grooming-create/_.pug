@@ -1,0 +1,87 @@
+.grooming-create
+  .l__sprint-selection
+    .p-fluid: .p-field
+      label(for="sprintDropdown") Select section for Grooming
+
+      p-dropdown(
+        v-model="selectedSprint"
+        filter
+        inputId="sprintDropdown"
+        :options="futuresSprint"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="None"
+        style="width:250px"
+        @input="doGetIssues"
+        )
+
+  .l__list
+    template(v-if="isIssuesFetched")
+      .p-mt-5.p-mb-5: p-divider
+
+      template(v-if="issues.length")
+        .l__toolbar.p-mb-3
+          p-toolbar
+            template(#left)
+              p-button.p-mr-3(
+                :disabled="!selectedIssues.length"
+                icon="pi pi-plus"
+                label="Export for Grooming"
+                @click="doSubmit"
+                )
+
+              template(v-if="result")
+                span
+                  | #[i.pi.pi-check.p-mr-1]
+                  | Click
+                  a.p-mx-1(
+                    v-tooltip.top="result.title"
+                    :href="result.url"
+                    target="_blank"
+                    ) here
+                  | to visit the page.
+
+        .l__table
+          p-data-table(
+            dataKey="id"
+            :selection.sync="selectedIssues"
+            :value="issues"
+            )
+
+            p-column(
+              selectionMode="multiple"
+              headerStyle="width:3rem"
+              )
+
+            p-column(
+              field="key"
+              header="Key"
+              headerStyle="width:160px"
+              )
+
+            p-column(field="summary" header="Summary")
+
+            p-column(
+              bodyClass="p-text-right"
+              field="story_points"
+              header="Points"
+              headerClass="p-text-right"
+              headerStyle="width:100px"
+              )
+
+            p-column(
+              bodyClass="p-text-center"
+              header="Actions"
+              headerClass="p-text-center"
+              headerStyle="width:120px"
+              ): template(#body="{ data }")
+
+              a(:href="getIssueUrl(data.key)" target="_blank")
+                p-button.p-button-rounded.p-button-text(
+                  icon="pi pi-external-link"
+                  title="Open JIRA page"
+                  )
+
+
+      template(v-else)
+        span No issues exist on this section. Please select another section.

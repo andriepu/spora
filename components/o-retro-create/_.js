@@ -17,9 +17,9 @@ export default {
       const loader = this.$loading.show();
 
       const [err, resp] = await catchify(
-        axios.post('/api/confluence/retro/new', {
+        axios.post('/api/confluence/retro/create', {
           json: window.btoa(this.form),
-        }),
+        }, { timeout: 10000 }),
       );
 
       loader.hide();

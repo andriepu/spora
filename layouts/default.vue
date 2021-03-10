@@ -46,7 +46,7 @@ export default {
             this.createMenuItem({
               label: 'Export MetroRetro',
               icon: 'pi pi-file',
-              to: '/retros/export-metroretro',
+              to: '/retros/new',
             }),
           ],
         },

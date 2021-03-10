@@ -1,4 +1,6 @@
+import { sprintf } from 'sprintf-js';
 import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
+import { RETRO_TITLE } from '~/api/constants/variables';
 import axios from '~/api/modules/axios/--confluence';
 import buildPageInfo from '~/api/utils/adf/build-page-info';
 import convertMention from '~/api/utils/adf/convert-mention';
@@ -57,7 +59,7 @@ const buildRetroTable = (contents) => {
 
 export default ({ actions, notes, date, participants, contents }) => (
   axios.post('/content', {
-    title: `Retrospective ${date}`,
+    title: sprintf(RETRO_TITLE, date),
     type: 'page',
     space: { key: SPACE_KEY },
     ancestors: [{ id: CONFLUENCE_RETRO_PARENT_ID }],

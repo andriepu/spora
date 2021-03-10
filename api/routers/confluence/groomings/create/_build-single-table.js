@@ -20,10 +20,10 @@ const topTitles = [
 
 const dspan = { colspan: 1, rowspan: 1 };
 
-const adfColspan = colspan => adf.tableCell({
+const adfColspan = (colspan, content = '') => adf.tableCell({
   ...dspan,
   colspan,
-})(adf.p(''));
+})(adf.p(content));
 
 export default (issue, { components }) => (
   adf.table(
@@ -47,15 +47,56 @@ export default (issue, { components }) => (
 
     adf.tableRow([adfColspan(4)]),
 
+    adf.tableRow(topTitles.map(title => (
+      adf.tableCell({ ...dspan })(
+        adf.alignment({ align: 'center' })(
+          adf.p(adf.strong(adf.text(title))),
+        ),
+      )
+    ))),
+
+    adf.tableRow([
+      ...[
+        ACCEPTANCE_KEY,
+        IMPLEMENTATION_KEY,
+        CONSTRAINTS_KEY,
+      ].map(key => (
+        adf.tableCell({ colspan: 1, rowspan: 1 })(
+          ...(issue.fields[key]
+            ? issue.fields[key].content
+            : [adf.p(' ')]
+          ),
+        )),
+      ),
+
+      adf.tableCell({ colspan: 1, rowspan: 1 })(
+        ...flatten(['Questions', 'Actions'].map(key => [
+          adf.p(adf.underline(adf.subsup({ type: 'sub' })(
+            adf.text(key),
+          ))),
+
+          adf.taskList()(
+            adf.taskItem({ state: 'TODO' })(
+              adf.text('-'),
+            ),
+          ),
+        ])),
+      ),
+    ]),
+
+    adf.tableRow([adfColspan(4)]),
+
     adf.tableRow([
       adf.tableCell({
         ...dspan,
         colspan: 3,
         background: '#f4f5f7',
       })(
-        adf.p(adf.strong(adf.text(
-          'Description',
-        ))),
+        adf.alignment({ align: 'center' })(
+          adf.p(adf.strong(adf.text(
+            'Description',
+          ))),
+        ),
       ),
 
       adf.tableCell({
@@ -75,7 +116,7 @@ export default (issue, { components }) => (
       })(
         ...(issue.fields[DESCRIPTION_KEY]
           ? issue.fields[DESCRIPTION_KEY].content
-          : [adf.p('-')]
+          : [adf.p(' ')]
         ),
       ),
 
@@ -92,43 +133,6 @@ export default (issue, { components }) => (
             )
           ))),
         ),
-      ),
-    ]),
-
-    adf.tableRow([adfColspan(4)]),
-
-    adf.tableRow(topTitles.map(title => (
-      adf.tableHeader({ ...dspan })(
-        adf.p(adf.strong(adf.text(title))),
-      )
-    ))),
-
-    adf.tableRow([
-      ...[
-        ACCEPTANCE_KEY,
-        IMPLEMENTATION_KEY,
-        CONSTRAINTS_KEY,
-      ].map(key => (
-        adf.tableCell({ colspan: 1, rowspan: 1 })(
-          ...(issue.fields[key]
-            ? issue.fields[key].content
-            : [adf.p('-')]
-          ),
-        )),
-      ),
-
-      adf.tableCell({ colspan: 1, rowspan: 1 })(
-        ...flatten(['Questions', 'Actions'].map(key => [
-          adf.p(adf.underline(adf.subsup({ type: 'sub' })(
-            adf.text(key),
-          ))),
-
-          adf.taskList()(
-            adf.taskItem({ state: 'TODO' })(
-              adf.text('-'),
-            ),
-          ),
-        ])),
       ),
     ]),
   )

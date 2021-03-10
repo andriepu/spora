@@ -203,11 +203,15 @@ export default {
     },
 
     async doExportGrooming () {
+      const loader = this.$loading.show();
+
       const [err, resp] = await catchify(
         axios.post('/api/confluence/groomings/new', {
           issues: this.selectedIssues.map(({ key }) => key),
         }),
       );
+
+      loader.hide();
 
       if (err) {
         this.$toast.add({

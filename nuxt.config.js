@@ -46,21 +46,7 @@ export default {
 
   build: {},
 
-  serverMiddleware: [
-    '~/api',
-    // {
-    //   path: '/api/post-grooming-document',
-    //   handler: '~/api/post-grooming-document',
-    // },
-    // {
-    //   path: '/api/post-grooming-for-jira',
-    //   handler: '~/api/post-grooming-for-jira',
-    // },
-    // {
-    //   path: '/api/get-sprint-issues',
-    //   handler: '~/api/get-sprint-issues',
-    // },
-  ],
+  serverMiddleware: ['~/api'],
 
   env: {
     JIRA_URL: process.env.JIRA_URL,

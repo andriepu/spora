@@ -14,8 +14,10 @@ export default {
     isSuccess: false,
   }),
 
-  mounted () {
-    this.$el.addEventListener('click', async () => {
+  methods: {
+    async clickCallback () {
+      if (this.isSuccess) return;
+
       this.isLoading = true;
 
       const [errUpdate] = await catchify(
@@ -29,7 +31,11 @@ export default {
 
       this.isFetched = true;
       this.isLoading = false;
-    });
+    },
+  },
+
+  mounted () {
+    this.$el.addEventListener('click', this.clickCallback.bind(this), true);
   },
 
   render (h) {

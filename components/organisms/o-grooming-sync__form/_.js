@@ -55,8 +55,8 @@ export default {
     },
 
     doSyncSelected () {
-      this.$el.querySelectorAll('.x-sync-button').forEach((el) => {
-        el.click();
+      this.selectedIssues.forEach(({ key }) => {
+        this.$el.querySelector(`[data-x-sync-button="${key}"]`).click();
       });
     },
   },

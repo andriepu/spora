@@ -13,4 +13,10 @@ export default {
 
     issueKey: { key: String },
   },
+
+  computed: {
+    issueUrl () {
+      return new URL(`/browse/${this.issueKey}`, process.env.JIRA_URL).href;
+    },
+  },
 };

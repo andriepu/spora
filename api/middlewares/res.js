@@ -1,6 +1,6 @@
 export default (req, res, next) => {
   res.error = (err) => {
-    console.error(new Error('Error stack trace').stack);
+    console.error(new Error('Stack trace').stack);
 
     return res
       .status(err.status || err.response.status)

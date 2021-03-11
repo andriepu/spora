@@ -6,10 +6,11 @@ span.grooming-sync-button
       )
 
   template(v-else-if="isSuccess")
-    p-button.p-button-rounded.p-button-text.p-button-success(
-      disabled
-      icon="pi pi-check"
-      )
+    a(:href="issueUrl" target="_blank")
+      p-button.p-button-rounded.p-button-text.p-button-success(
+        v-tooltip.top="`Open ${issueKey}`"
+        icon="pi pi-check"
+        )
 
   template(v-else-if="isFailed")
     p-button.p-button-rounded.p-button-text.p-button-danger(
@@ -19,6 +20,6 @@ span.grooming-sync-button
 
   template(v-else)
     p-button.p-button-rounded.p-button-text(
+      v-tooltip.top="`Sync ${issueKey}`"
       icon="pi pi-send"
-      :title="`Sync ${issueKey}`"
       )

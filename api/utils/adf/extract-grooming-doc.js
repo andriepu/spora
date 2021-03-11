@@ -11,7 +11,7 @@ const extractQnA = (taskList) => {
     (acc, item) =>
       item.type === 'taskItem' &&
       !(item.content.length === 1 && item.content[0].text === '-')
-        ? [...acc, adf.listItem(item.content)]
+        ? [...acc, adf.listItem([adf.p(...item.content)])]
         : acc,
     [],
   );
@@ -46,6 +46,9 @@ export default (doc) => {
       seventhRow,
       ({ type }) => type === 'tableCell',
     );
+
+    const questionsAdf = extractQnA(questionsCell);
+    const actionsAdf = extractQnA(actionsCell);
 
     return {
       key: reduce(
@@ -83,10 +86,19 @@ export default (doc) => {
         ? adf.doc(...constraintsCell.content)
         : null,
 
-      comments: {
-        questions_node_adf: extractQnA(questionsCell),
-        actions_node_adf: extractQnA(actionsCell),
-      },
+      comment_adf: !questionsAdf && !actionsAdf
+        ? null
+        : adf.doc(
+          ...(questionsAdf ? [
+            adf.p(adf.underline(adf.text('Questions:'))),
+            questionsAdf,
+          ] : []),
+
+          ...(actionsAdf ? [
+            adf.p(adf.underline(adf.text('Actions:'))),
+            actionsAdf,
+          ] : []),
+        ),
 
       description_adf: isContainingText(descriptionCell)
         ? adf.doc(...descriptionCell.content)

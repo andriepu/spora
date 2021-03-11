@@ -46,8 +46,6 @@ export default {
     enabled: true,
   },
 
-  build: {},
-
   serverMiddleware: ['~/api'],
 
   env: {

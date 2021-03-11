@@ -1,8 +1,8 @@
 import { flatten } from 'lodash';
 import * as adf from '@atlaskit/adf-utils/builders';
 import axios from '~/api/modules/axios/--confluence';
+import extractGroomingDoc from '~/api/utils/adf/extract-grooming-doc';
 import buildSingleTable from './_build-single-table';
-import extractExistingGrooming from './_extract-existing-grooming';
 
 export default ({
   components,
@@ -10,7 +10,7 @@ export default ({
   issues,
 }) => {
   const existingAdf = JSON.parse(existing.body.atlas_doc_format.value);
-  const existingIssues = extractExistingGrooming(existingAdf);
+  const existingIssues = extractGroomingDoc(existingAdf);
   const existingKeys = existingIssues.map(({ key }) => key);
 
   const nonExistingIssues = issues.filter(({ key }) => (

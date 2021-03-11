@@ -28,12 +28,12 @@ export default {
             this.createMenuItem({
               label: 'Create Document',
               icon: 'pi pi-file',
-              to: '/groomings/new',
+              to: '/groomings/confluence/new',
             }),
             this.createMenuItem({
               label: 'Sync to JIRA',
               icon: 'pi pi-arrow-circle-up',
-              to: '/groomings/sync-jira',
+              to: '/groomings/jira/sync',
             }),
           ],
         },
@@ -46,7 +46,7 @@ export default {
             this.createMenuItem({
               label: 'Export MetroRetro',
               icon: 'pi pi-file',
-              to: '/retros/new',
+              to: '/retros/confluence/new',
             }),
           ],
         },

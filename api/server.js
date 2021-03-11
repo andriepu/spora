@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import { API_BASEPATH } from '~/api/constants/comms';
 
 import queryParser from './middlewares/query-parser';
-import responseJson from './middlewares/response-json';
+import resUtil from './middlewares/res';
 import apiGuard from './middlewares/api-guard';
 
 import routers from './routers';
@@ -16,7 +16,7 @@ const app = express();
   bodyParser.urlencoded({ extended: true }),
   bodyParser.json(),
   queryParser,
-  responseJson,
+  resUtil,
   // apiGuard,
 ].forEach((middleware) => {
   app.use(middleware);

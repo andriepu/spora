@@ -5,5 +5,10 @@ const { PROJECT_KEY } = process.env;
 
 export default () => axios.get(`/project/${PROJECT_KEY}/components`)
   .then(({ data }) => (
-    data.map(component => pick(component, ['id', 'name']))
+    data.map(component => pick(component, [
+      'self',
+      'id',
+      'name',
+      'description',
+    ]))
   ));

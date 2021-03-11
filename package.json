@@ -23,6 +23,7 @@
     "catchify": "^2.6.1",
     "cookie-parser": "^1.4.5",
     "cookie-universal-nuxt": "^2.1.4",
+    "d-forest": "^1.4.2",
     "date-fns": "^2.16.1",
     "eslint": "^7.5.0",
     "eslint-plugin-nuxt": "^1.0.0",

@@ -1,0 +1,24 @@
+.grooming-sync-button
+  template(v-if="isLoading")
+    p-button.p-button-rounded.p-button-text.u-spinner(
+      disabled
+      icon="pi pi-spinner"
+      )
+
+  template(v-else-if="isSuccess")
+    p-button.p-button-rounded.p-button-text.p-button-success(
+      disabled
+      icon="pi pi-check"
+      )
+
+  template(v-else-if="isFailed")
+    p-button.p-button-rounded.p-button-text.p-button-danger(
+      v-tooltip.top="`Retry`"
+      icon="pi pi-times"
+      )
+
+  template(v-else)
+    p-button.p-button-rounded.p-button-text(
+      icon="pi pi-send"
+      :title="`Sync ${issueKey}`"
+      )

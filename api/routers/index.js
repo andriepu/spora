@@ -4,7 +4,8 @@ import requireGlob from 'require-glob';
 const router = express.Router();
 
 const generateKey = path => path
-  .replace(/\/index\.js$/, '');
+  .replace(/\/index\.js$/, '')
+  .replace(/_/g, ':');
 
 const modules = requireGlob.sync('./*/**/index.js', {
   reducer: ({ base }, result, file) => ({

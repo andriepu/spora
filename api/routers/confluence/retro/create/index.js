@@ -1,3 +1,4 @@
+import catchify from 'catchify';
 import extractData from './_extract-data';
 import postRetro from './_post-retro';
 
@@ -10,17 +11,21 @@ export const post = async (req, res) => {
 
   const { date, notes, actions, participants, contents } = extractData(json);
 
-  const data = await postRetro({
+  const [errContent, content] = await catchify(postRetro({
     actions,
     notes,
     date,
     contents,
     participants,
-  });
+  }));
+
+  if (errContent) res.error(errContent);
 
   res.json({
-    id: data.id,
-    title: data.title,
-    url: new URL(`/wiki${data._links.webui}`, CONFLUENCE_URL).href,
+    data: {
+      id: content.id,
+      title: content.title,
+      url: new URL(`/wiki${content._links.webui}`, CONFLUENCE_URL).href,
+    },
   });
 };

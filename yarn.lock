@@ -3497,6 +3497,11 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
+d-forest@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/d-forest/-/d-forest-1.4.2.tgz#266230cfd242588d3a9363c0d74b73656eb338aa"
+  integrity sha512-l+GgqrDqM0TT0982smZWoR5nH9Lx7mYqPs0aCAV004x+11gYG2JZjSsiOf9mndkplZ6gK6BTwVxxnfYqY3pWZw==
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"

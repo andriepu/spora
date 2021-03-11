@@ -1,0 +1,76 @@
+.grooming-sync-form
+  template(v-if="groomings.length")
+    .l__doc-selection.p-mb-5
+      .p-fluid: .p-field
+        label(for="groomingsDropdown") Select grooming document
+        p-dropdown(
+          v-model="selectedGrooming"
+          filter
+          inputId="groomingsDropdown"
+          :options="groomings"
+          optionLabel="title"
+          optionValue="id"
+          placeholder="None"
+          style="width:250px"
+          @input="doGetIssues"
+          )
+
+  template(v-else-if="isGroomingsFetched")
+    .l__empty
+      span Grooming documents were not found.
+
+  template(v-if="issues.length")
+    .l__toolbar.p-mb-3
+      p-toolbar
+        template(#left)
+          p-button.p-mr-3(
+            :disabled="!selectedIssues.length"
+            icon="pi pi-plus"
+            label="Sync selecteed"
+            @click="doSyncSelected"
+            )
+
+    .l__table
+      p-data-table(
+        dataKey="key"
+        :selection.sync="selectedIssues"
+        :value="issues"
+        )
+
+        p-column(
+          selectionMode="multiple"
+          headerStyle="width:3rem"
+          )
+
+        p-column(
+          field="key"
+          header="Key"
+          headerStyle="width:160px"
+          )
+
+        p-column(field="summary" header="Summary")
+
+        p-column(
+          bodyClass="p-text-right"
+          field="story_points"
+          header="Points"
+          headerClass="p-text-right"
+          headerStyle="width:100px"
+          )
+
+        p-column(
+          bodyClass="p-text-center"
+          header="Actions"
+          headerClass="p-text-center"
+          headerStyle="width:120px"
+          ): template(#body="{ data }")
+
+          u-grooming-sync(:issue="data" #default="slotProps")
+            o-grooming-sync-button(
+              :issueKey="data.key"
+              :isLoading="slotProps.isLoading"
+              :isSuccess="slotProps.isSuccess"
+              :isFailed="slotProps.isFailed"
+              :data-x-sync-button="data.key"
+              )
+

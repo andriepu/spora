@@ -25,7 +25,7 @@ const adfColspan = (colspan, content = '') => adf.tableCell({
   colspan,
 })(adf.p(content));
 
-export default (issue, { components }) => (
+export default (issue, { components }) => [
   adf.table(
     adf.tableRow([
       adf.tableHeader({ ...dspan, colspan: 3 })(
@@ -64,7 +64,7 @@ export default (issue, { components }) => (
         adf.tableCell({ colspan: 1, rowspan: 1 })(
           ...(issue.fields[key]
             ? issue.fields[key].content
-            : [adf.p(' ')]
+            : [adf.p('')]
           ),
         )),
       ),
@@ -116,7 +116,7 @@ export default (issue, { components }) => (
       })(
         ...(issue.fields[DESCRIPTION_KEY]
           ? issue.fields[DESCRIPTION_KEY].content
-          : [adf.p(' ')]
+          : [adf.p('')]
         ),
       ),
 
@@ -135,5 +135,13 @@ export default (issue, { components }) => (
         ),
       ),
     ]),
-  )
-);
+  ),
+
+  adf.alignment({ align: 'center' })(adf.p('')),
+  adf.alignment({ align: 'center' })(adf.p(
+    adf.textColor({ color: '#4c9aff' })(adf.strike(adf.text('     '))),
+    adf.textColor({ color: '#4c9aff' })(adf.text('■■■■')),
+    adf.textColor({ color: '#4c9aff' })(adf.strike(adf.text('     '))),
+  )),
+  adf.alignment({ align: 'center' })(adf.p('')),
+];

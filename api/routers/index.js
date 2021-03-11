@@ -19,8 +19,6 @@ const modules = requireGlob.sync('./*/**/index.js', {
   }),
 });
 
-console.log(modules);
-
 Object.keys(modules).map((path, i) => {
   const { method, middleware } = modules[path];
 

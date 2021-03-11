@@ -1,44 +1,17 @@
 import axios from '~/api/modules/axios/--jira-agile';
-import {
-  ACCEPTANCE_KEY,
-  STORY_POINTS_KEY,
-} from '~/api/constants/customfields';
+import * as customfields from '~/api/constants/customfields';
 
 const { BOARD_ID } = process.env;
 
-const fields = [
-  'description',
-  'parent',
-  'summary',
-  STORY_POINTS_KEY,
-  ACCEPTANCE_KEY,
-].join(',');
-
 export default sprintId => axios.get(`/board/${BOARD_ID}/sprint/${sprintId}/issue`, {
-  params: { fields },
+  params: { fields: Object.values(customfields).join(',') },
 }).then(({ data }) => (
   data.issues
-    .filter(({ fields }) => !fields.parent)
-    .map(({ id, key, fields }) => {
-      const [description = '', notes = ''] = (fields.description || '')
-        .split(/\n+---+\n+/);
-
-      return {
-        id,
-        key,
-        description: description
-          .replace(/\*(.*?)\*/g, '**$1**')
-          .replace(/_(.*?)_/g, '*$1*'),
-        notes: notes
-          .replace(/\*Constraints & Assumptions\*\n+/, '')
-          .replace(/\*(.*?)\*/g, '**$1**')
-          .replace(/_(.*?)_/g, '*$1*'),
-        summary: fields.summary,
-        story_points: fields[STORY_POINTS_KEY],
-        acceptances: (fields[ACCEPTANCE_KEY] || '')
-          .split(/\n+---+\n+/)
-          .filter(Boolean)
-          .map(acc => acc.trim()),
-      };
-    })
+    .filter(({ fields }) => !fields[customfields.PARENT_KEY])
+    .map(({ id, key, fields }) => ({
+      id,
+      key,
+      summary: fields[customfields.SUMMARY_KEY],
+      story_points: fields[customfields.STORY_POINTS_KEY],
+    }))
 ));

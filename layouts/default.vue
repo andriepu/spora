@@ -28,7 +28,7 @@ export default {
             this.createMenuItem({
               label: 'Create Document',
               icon: 'pi pi-file',
-              to: '/groomings/create-document',
+              to: '/groomings/new',
             }),
             this.createMenuItem({
               label: 'Sync to JIRA',

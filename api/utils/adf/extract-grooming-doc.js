@@ -1,4 +1,5 @@
-import { filter, reduce } from '@atlaskit/adf-utils/traverse';
+import { pick } from 'lodash';
+import { traverse, filter, reduce } from '@atlaskit/adf-utils/traverse';
 import * as adf from '@atlaskit/adf-utils/builders';
 
 const isContainingText = node => !!filter(node, child => (
@@ -18,6 +19,18 @@ const extractQnA = (taskList) => {
 
   return list.length ? adf.bulletList(...list) : null;
 };
+
+const sanitizeAdf = adf => traverse(adf, {
+  text: (node) => {
+    const links = (node.marks || []).filter(mark => mark.type === 'link');
+
+    links.forEach((link) => {
+      link.attrs = pick(link.attrs, ['href']);
+    });
+
+    return node;
+  },
+});
 
 export default (doc) => {
   const tables = filter(doc, node => node.type === 'table');
@@ -75,20 +88,20 @@ export default (doc) => {
       ),
 
       acceptances_adf: isContainingText(acceptanceCell)
-        ? adf.doc(...acceptanceCell.content)
+        ? sanitizeAdf(adf.doc(...acceptanceCell.content))
         : null,
 
       implementation_adf: isContainingText(detailCell)
-        ? adf.doc(...detailCell.content)
+        ? sanitizeAdf(adf.doc(...detailCell.content))
         : null,
 
       constratints_adf: isContainingText(constraintsCell)
-        ? adf.doc(...constraintsCell.content)
+        ? sanitizeAdf(adf.doc(...constraintsCell.content))
         : null,
 
       comment_adf: !questionsAdf && !actionsAdf
         ? null
-        : adf.doc(
+        : sanitizeAdf(adf.doc(
           ...(questionsAdf ? [
             adf.p(adf.underline(adf.text('Questions:'))),
             questionsAdf,
@@ -98,10 +111,10 @@ export default (doc) => {
             adf.p(adf.underline(adf.text('Actions:'))),
             actionsAdf,
           ] : []),
-        ),
+        )),
 
       description_adf: isContainingText(descriptionCell)
-        ? adf.doc(...descriptionCell.content)
+        ? sanitizeAdf(adf.doc(...descriptionCell.content))
         : null,
 
       components: reduce(

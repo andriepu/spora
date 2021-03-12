@@ -17,14 +17,17 @@ export const get = async (req, res, next) => {
 
   const keys = groomingData.map(({ key }) => key);
   const [eSummaries, summaries] = await catchify(
-    getIssuesDetail(keys).then(data => data.map(({ fields }) => fields.summary)),
+    getIssuesDetail(keys).then(data => data.reduce((acc, { key, fields }) => ({
+      ...acc,
+      [key]: fields.summary,
+    }), {})),
   );
 
   if (eSummaries) return res.error(eSummaries);
 
   const issues = groomingData.map((data, i) => ({
     ...data,
-    summary: summaries[i],
+    summary: summaries[data.key],
   }));
 
   res.json({ data: issues });

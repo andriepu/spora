@@ -24,7 +24,7 @@ a {
   outline: none;
 }
 
-ul {
+ol {
   padding: 0;
   margin: 0;
   margin-left: 1rem;
@@ -44,7 +44,7 @@ ul {
   }
 }
 
-li > ul {
+li > ol {
   margin-top: 0.5rem;
   margin-left: 1.25rem;
 }

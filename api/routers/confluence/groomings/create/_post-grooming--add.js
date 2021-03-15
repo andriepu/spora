@@ -1,4 +1,3 @@
-import { flatten } from 'lodash';
 import * as adf from '@atlaskit/adf-utils/builders';
 import axios from '~/api/modules/axios/--confluence';
 import extractGroomingDoc from '~/api/utils/adf/extract-grooming-doc';
@@ -26,9 +25,9 @@ export default ({
         value: JSON.stringify(
           adf.doc(
             ...existingAdf.content,
-            ...flatten(nonExistingIssues.map(issue => (
+            ...nonExistingIssues.map(issue => (
               buildSingleTable(issue, { components })
-            ))),
+            )),
           ),
         ),
         representation: 'atlas_doc_format',

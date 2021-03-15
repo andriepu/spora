@@ -14,7 +14,7 @@ export const patch = async (req, res) => {
   if (errComponents) return res.error(errComponents);
 
   const filteredComponents = components
-    .filter(({ id }) => issue.components.includes(id));
+    .filter(({ name }) => issue.components.includes(name));
 
   const update = {
     ...issue,

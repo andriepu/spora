@@ -119,9 +119,9 @@ export default (doc) => {
 
       components: reduce(
         componentsCell,
-        (acc, { type, attrs }) => (
+        (acc, { attrs, content, type }) => (
           type === 'taskItem' && attrs.state === 'DONE'
-            ? [...acc, attrs.localId]
+            ? [...acc, content[0].text]
             : acc
         ),
         [],

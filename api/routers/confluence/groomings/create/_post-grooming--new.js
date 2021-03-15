@@ -1,4 +1,3 @@
-import { flatten } from 'lodash';
 import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
 import axios from '~/api/modules/axios/--confluence';
 import buildPageInfo from '~/api/utils/adf/build-page-info';
@@ -19,9 +18,9 @@ export default ({
     atlas_doc_format: {
       value: JSON.stringify(adf.doc(
         buildPageInfo({ date: new Date() }),
-        ...flatten(issues.map(issue => (
+        ...issues.map(issue => (
           buildSingleTable(issue, { components })
-        ))),
+        )),
       )),
       representation: 'atlas_doc_format',
     },

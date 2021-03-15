@@ -25,7 +25,7 @@ const adfColspan = (colspan, content = '') => adf.tableCell({
   colspan,
 })(adf.p(content));
 
-export default (issue, { components }) => [
+export default (issue, { components }) => (
   adf.table(
     adf.tableRow([
       adf.tableHeader({ ...dspan, colspan: 3 })(
@@ -124,7 +124,6 @@ export default (issue, { components }) => [
         adf.taskList()(
           ...(components.map(component => (
             adf.taskItem({
-              localId: `${component.id}`,
               state: issue.fields[COMPONENTS_KEY].some(({ id }) => id === component.id)
                 ? 'DONE'
                 : 'TODO',
@@ -135,13 +134,21 @@ export default (issue, { components }) => [
         ),
       ),
     ]),
-  ),
 
-  adf.alignment({ align: 'center' })(adf.p('')),
-  adf.alignment({ align: 'center' })(adf.p(
-    adf.textColor({ color: '#4c9aff' })(adf.strike(adf.text('     '))),
-    adf.textColor({ color: '#4c9aff' })(adf.text('■■■■')),
-    adf.textColor({ color: '#4c9aff' })(adf.strike(adf.text('     '))),
-  )),
-  adf.alignment({ align: 'center' })(adf.p('')),
-];
+    adf.tableRow([
+      adf.tableCell({
+        ...dspan,
+        colspan: 4,
+      })(
+        adf.alignment({ align: 'center' })(adf.p('')),
+        adf.alignment({ align: 'center' })(adf.p('')),
+        adf.alignment({ align: 'center' })(adf.p(
+          adf.textColor({ color: '#4c9aff' })(adf.strike(adf.text('     '))),
+          adf.textColor({ color: '#4c9aff' })(adf.text('■■■■')),
+          adf.textColor({ color: '#4c9aff' })(adf.strike(adf.text('     '))),
+        )),
+        adf.alignment({ align: 'center' })(adf.p('')),
+      ),
+    ]),
+  )
+);

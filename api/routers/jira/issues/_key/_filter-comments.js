@@ -4,9 +4,11 @@
 
 import { diff } from 'deep-object-diff';
 import { isEmpty, cloneDeep } from 'lodash';
-import { traverse } from '@atlaskit/adf-utils/traverse';
+import { traverse, filter } from '@atlaskit/adf-utils/traverse';
 
 const isEqual = (a, b) => isEmpty(diff(a, b));
+
+const extractTexts = adf => filter(adf, ({ type }) => type === 'text');
 
 export default (commentAdf, existingComments) => {
   const clonedCommentAdf = cloneDeep(commentAdf);
@@ -14,7 +16,7 @@ export default (commentAdf, existingComments) => {
   const noExistingComments = traverse(clonedCommentAdf, {
     listItem: (node, parent, index) => {
       const isExist = existingComments.some(existingComment => (
-        isEqual(existingComment, node)
+        isEqual(extractTexts(existingComment), extractTexts(node))
       ));
 
       if (isExist) return false;

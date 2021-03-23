@@ -35,6 +35,9 @@ export default {
   }),
 
   methods: {
+    getIssueUrl (key) {
+      return new URL(`/browse/${key}`, process.env.JIRA_URL).href;
+    },
     async doGetIssues (docId) {
       const loading = this.$loading.show();
 

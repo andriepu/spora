@@ -56,7 +56,10 @@
               field="key"
               header="Key"
               headerStyle="width:160px"
-              )
+              ): template(#body="{ data }")
+
+              a(:href="getIssueUrl(data.key)" target="_blank")
+                | {{ data.key }}
 
             p-column(field="summary" header="Summary")
 
@@ -67,20 +70,6 @@
               headerClass="p-text-right"
               headerStyle="width:100px"
               )
-
-            p-column(
-              bodyClass="p-text-center"
-              header="Actions"
-              headerClass="p-text-center"
-              headerStyle="width:120px"
-              ): template(#body="{ data }")
-
-              a(:href="getIssueUrl(data.key)" target="_blank")
-                p-button.p-button-rounded.p-button-text(
-                  icon="pi pi-external-link"
-                  title="Open JIRA issue"
-                  )
-
 
       template(v-else)
         span No issues exist on this section. Please select another section.

@@ -3,7 +3,7 @@ export default (req, res, next) => {
     console.error(new Error('Stack trace').stack);
 
     return res
-      .status(err.status || err.response.status)
+      .status(err.status || (err.response && err.response.status) || 500)
       .send({ message: err.message });
   };
 

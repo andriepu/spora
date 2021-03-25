@@ -46,7 +46,7 @@ export default (keys, { contentId }) => Promise.all([
       ...(await promise),
       [issue.key]: fieldsWithEditor.reduce((acc1, key) => ({
         ...acc1,
-        [key]: (issue.fields[key].match(/!(.*)?\|width=\d+,height=\d+!/g) || [])
+        [key]: ((issue.fields[key] || '').match(/!(.*)?\|width=\d+,height=\d+!/g) || [])
           .map(att => ({
             ...confluenceAttachments[att.replace(/!(.*)?\|.*/, '$1')],
             height: Number(att.replace(/.*\|.*?height=(\d+).*/, '$1')),
@@ -62,9 +62,11 @@ export default (keys, { contentId }) => Promise.all([
       ...issue.fields,
       ...(fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
-        [fieldKey]: convertToConfluenceMedia(issue.fields[fieldKey], {
-          attachments: attachments[issue.key][fieldKey],
-        }),
+        [fieldKey]: issue.fields[fieldKey]
+          ? convertToConfluenceMedia(issue.fields[fieldKey], {
+            attachments: attachments[issue.key][fieldKey],
+          })
+          : null,
       }), {})),
     },
   }));

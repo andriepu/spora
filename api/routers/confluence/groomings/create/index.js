@@ -1,3 +1,4 @@
+import catchify from 'catchify';
 import postGrooming from './_post-grooming';
 
 const { CONFLUENCE_URL } = process.env;
@@ -5,9 +6,9 @@ const { CONFLUENCE_URL } = process.env;
 export const post = async (req, res) => {
   const { issues: issueKeys } = req.body;
 
-  const data = await postGrooming({
-    issueKeys,
-  });
+  const [ePostGrooming, data] = await catchify(postGrooming({ issueKeys }));
+
+  if (ePostGrooming) return res.error(ePostGrooming);
 
   res.json({
     data: {

@@ -12,8 +12,8 @@ export default async ({ issueKeys }) => {
 
   const title = sprintf(GROOMING_TITLE, activeSprint.name);
 
-  const existing = await getExistingByTitle(title) ||
-    await postGroomingNew({ title });
+  const existing = (await getExistingByTitle(title)) ||
+    (await postGroomingNew({ title }));
 
   return postGroomingAdd({
     components,

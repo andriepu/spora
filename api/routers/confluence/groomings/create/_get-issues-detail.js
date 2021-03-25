@@ -38,12 +38,13 @@ export default (keys, { contentId }) => Promise.all([
         ...(await promise1),
         [att.filename]: await uploadToConfluenceMedia(att.content, att.filename, {
           contentId,
+          existingAttachments: issue.fields.attachment,
         }),
       }), Promise.resolve({}));
 
-    return {
+    return Promise.resolve({
       ...(await promise),
-      ...fieldsWithEditor.reduce((acc1, key) => ({
+      [issue.key]: fieldsWithEditor.reduce((acc1, key) => ({
         ...acc1,
         [key]: (issue.fields[key].match(/!(.*)?\|width=\d+,height=\d+!/g) || [])
           .map(att => ({
@@ -52,7 +53,7 @@ export default (keys, { contentId }) => Promise.all([
             width: Number(att.replace(/.*\|.*?width=(\d+).*/, '$1')),
           })),
       }), {}),
-    };
+    });
   }, Promise.resolve({}));
 
   return v3.map(issue => ({
@@ -62,7 +63,7 @@ export default (keys, { contentId }) => Promise.all([
       ...(fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
         [fieldKey]: convertToConfluenceMedia(issue.fields[fieldKey], {
-          attachments: attachments[fieldKey],
+          attachments: attachments[issue.key][fieldKey],
         }),
       }), {})),
     },

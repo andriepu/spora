@@ -95,8 +95,8 @@ export default {
         this.$toast.add({
           life: 3000,
           severity: 'success',
-          summary: 'Create Retro Success!',
-          detail: 'Retro document is successfully created.',
+          summary: 'Create Grooming Success!',
+          detail: 'Grooming document is successfully created.',
         });
       }
     },

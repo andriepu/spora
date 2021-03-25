@@ -13,13 +13,24 @@ export default async ({
   const existingIssues = extractGroomingDoc(existingAdf);
   const existingKeys = existingIssues.map(({ key }) => key);
 
-  const issuesDetail = await getIssuesDetail(issueKeys, {
+  const nonExistingIssueKeys = issueKeys.filter(key => (
+    !existingKeys.includes(key)
+  ));
+
+  if (!nonExistingIssueKeys.length) return existing;
+
+  const issuesDetail = await getIssuesDetail(nonExistingIssueKeys, {
     contentId: existing.id,
   });
 
-  const nonExistingIssues = issuesDetail.filter(({ key }) => (
-    !existingKeys.includes(key)
-  ));
+  const newBody = JSON.stringify(
+    adf.doc(
+      ...existingAdf.content,
+      ...issuesDetail.map(issue => (
+        buildSingleTable(issue, { components })
+      )),
+    ),
+  );
 
   return axios.put(`/content/${existing.id}`, {
     title: existing.title,
@@ -27,14 +38,7 @@ export default async ({
     version: { number: existing.version.number + 1 },
     body: {
       atlas_doc_format: {
-        value: JSON.stringify(
-          adf.doc(
-            ...existingAdf.content,
-            ...nonExistingIssues.map(issue => (
-              buildSingleTable(issue, { components })
-            )),
-          ),
-        ),
+        value: newBody,
         representation: 'atlas_doc_format',
       },
     },

@@ -2,6 +2,15 @@ import { pick } from 'lodash';
 import { traverse, filter, reduce } from '@atlaskit/adf-utils/traverse';
 import * as adf from '@atlaskit/adf-utils/builders';
 
+import {
+  ACCEPTANCE_KEY,
+  COMPONENTS_KEY,
+  CONSTRAINTS_KEY,
+  DESCRIPTION_KEY,
+  IMPLEMENTATION_KEY,
+  STORY_POINTS_KEY,
+} from '~/api/constants/customfields';
+
 const isContainingText = node => !!filter(node, child => (
   child.type === 'paragraph' && child.content
 )).length;
@@ -79,7 +88,7 @@ export default (doc) => {
         '',
       ),
 
-      story_points: reduce(
+      [STORY_POINTS_KEY]: reduce(
         storyPointsCell,
         (acc, { text, type }) => (
           type === 'text'
@@ -92,19 +101,19 @@ export default (doc) => {
         null,
       ),
 
-      acceptances_adf: isContainingText(acceptanceCell)
+      [ACCEPTANCE_KEY]: isContainingText(acceptanceCell)
         ? sanitizeAdf(adf.doc(...acceptanceCell.content))
         : null,
 
-      implementation_adf: isContainingText(detailCell)
+      [IMPLEMENTATION_KEY]: isContainingText(detailCell)
         ? sanitizeAdf(adf.doc(...detailCell.content))
         : null,
 
-      constratints_adf: isContainingText(constraintsCell)
+      [CONSTRAINTS_KEY]: isContainingText(constraintsCell)
         ? sanitizeAdf(adf.doc(...constraintsCell.content))
         : null,
 
-      comment_adf: !questionsAdf && !actionsAdf
+      comment: !questionsAdf && !actionsAdf
         ? null
         : sanitizeAdf(adf.doc(
           ...(questionsAdf ? [
@@ -118,11 +127,11 @@ export default (doc) => {
           ] : []),
         )),
 
-      description_adf: isContainingText(descriptionCell)
+      [DESCRIPTION_KEY]: isContainingText(descriptionCell)
         ? sanitizeAdf(adf.doc(...descriptionCell.content))
         : null,
 
-      components: reduce(
+      [COMPONENTS_KEY]: reduce(
         componentsCell,
         (acc, { attrs, content, type }) => (
           type === 'taskItem' && attrs.state === 'DONE'

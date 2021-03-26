@@ -8,7 +8,15 @@ import PDivider from 'primevue/divider';
 import PDropdown from 'primevue/dropdown';
 import PToolbar from 'primevue/toolbar';
 
+import {
+  SUMMARY_KEY,
+  STORY_POINTS_KEY,
+} from '~/api/constants/customfields';
+
 export default {
+  SUMMARY_KEY,
+  STORY_POINTS_KEY,
+
   components: {
     PButton,
     PColumn,
@@ -66,7 +74,7 @@ export default {
       } else {
         this.selectedIssues = [];
         this.issues = resp.data.sort((a, b) => (
-          (b.story_points || Infinity) - (a.story_points || Infinity)
+          (b[STORY_POINTS_KEY] || Infinity) - (a[STORY_POINTS_KEY] || Infinity)
         ));
       }
     },

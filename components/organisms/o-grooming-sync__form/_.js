@@ -11,7 +11,15 @@ import PToolbar from 'primevue/toolbar';
 import OGroomingSyncButton from '~/components/organisms/o-grooming-sync__button';
 import UGroomingSync from '~/components/utilities/u-grooming-sync';
 
+import {
+  SUMMARY_KEY,
+  STORY_POINTS_KEY,
+} from '~/api/constants/customfields';
+
 export default {
+  SUMMARY_KEY,
+  STORY_POINTS_KEY,
+
   components: {
     PButton,
     PColumn,
@@ -52,7 +60,7 @@ export default {
         this.selectedGrooming = null;
       } else {
         this.issues = resp.data.sort((a, b) => (
-          (b.story_points || 0) - (a.story_points || 0)
+          (b[STORY_POINTS_KEY] || 0) - (a[STORY_POINTS_KEY] || 0)
         ));
       }
     },

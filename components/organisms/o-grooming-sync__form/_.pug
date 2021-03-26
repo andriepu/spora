@@ -50,11 +50,11 @@
           a(:href="getIssueUrl(data.key)" target="_blank")
             | {{ data.key }}
 
-        p-column(field="summary" header="Summary")
+        p-column(:field="$options.SUMMARY_KEY" header="Summary")
 
         p-column(
           bodyClass="p-text-right"
-          field="story_points"
+          :field="$options.STORY_POINTS_KEY"
           header="Points"
           headerClass="p-text-right"
           headerStyle="width:100px"
@@ -67,12 +67,15 @@
           headerStyle="width:120px"
           ): template(#body="{ data }")
 
-          u-grooming-sync(:issue="data" #default="slotProps")
-            o-grooming-sync-button(
-              :issueKey="data.key"
-              :isLoading="slotProps.isLoading"
-              :isSuccess="slotProps.isSuccess"
-              :isFailed="slotProps.isFailed"
-              :data-x-sync-button="data.key"
-              )
+          u-grooming-sync(
+            #default="slotProps"
+            :issueKey="data.key"
+            :groomingId="selectedGrooming"
+            ): o-grooming-sync-button(
+            :issueKey="data.key"
+            :isLoading="slotProps.isLoading"
+            :isSuccess="slotProps.isSuccess"
+            :isFailed="slotProps.isFailed"
+            :data-x-sync-button="data.key"
+            )
 

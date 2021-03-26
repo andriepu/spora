@@ -1,5 +1,6 @@
 {
   "name": "spora",
+  "description": "Scrum Process Assistant",
   "version": "1.0.0",
   "private": true,
   "scripts": {

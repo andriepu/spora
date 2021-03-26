@@ -6,7 +6,7 @@ export default {
   mode: 'universal',
   target: 'server',
   head: {
-    title: 'Scrum Assistant',
+    title: 'Spora: Scrum Process Assistant',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

@@ -3,7 +3,8 @@ import axios from 'axios';
 
 export default {
   props: {
-    issue: { type: Object, required: true },
+    issueKey: { type: String, required: true },
+    groomingId: { type: String, required: true },
   },
 
   data: () => ({
@@ -21,8 +22,8 @@ export default {
       this.isLoading = true;
 
       const [errUpdate] = await catchify(
-        axios.patch(`/api/jira/issues/${this.issue.key}`, {
-          issue: this.issue,
+        axios.patch(`/api/jira/issues/${this.issueKey}`, {
+          groomingId: this.groomingId,
         }),
       );
 

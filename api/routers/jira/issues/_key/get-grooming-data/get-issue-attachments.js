@@ -23,6 +23,7 @@ export default (docId, issue) => axiosConfluence.get(
 ].map((key) => {
   const mediaMap = filter(issue[key], node => node.type === 'media')
     .reduce((acc, media) => ({
+      ...acc,
       [media.attrs.id]: media,
     }), {});
 

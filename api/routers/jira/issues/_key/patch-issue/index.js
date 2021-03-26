@@ -1,4 +1,5 @@
 import catchify from 'catchify';
+import { omit } from 'lodash';
 import { traverse } from '@atlaskit/adf-utils/traverse';
 import { p, text } from '@atlaskit/adf-utils/builders';
 import axiosJira from '~/api/modules/axios/--jira';
@@ -48,7 +49,9 @@ export default async (issue, { jiraAttachments }) => {
     fields: {
       ...fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
-        [fieldKey]: mediaToText(issue[fieldKey]),
+        [fieldKey]: issue[fieldKey]
+          ? mediaToText(issue[fieldKey])
+          : null,
       }), {}),
       [COMPONENTS_KEY]: issue[COMPONENTS_KEY],
       [STORY_POINTS_KEY]: issue[STORY_POINTS_KEY],
@@ -68,9 +71,9 @@ export default async (issue, { jiraAttachments }) => {
     fields: {
       ...fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
-        [fieldKey]: issueV2.fields[fieldKey].includes(mediaSign)
+        [fieldKey]: (issueV2.fields[fieldKey] || '').includes(mediaSign)
           ? textToMedia(issueV2.fields[fieldKey])
-          : undefined,
+          : issueV2.fields[fieldKey],
       }), {}),
     },
   }));
@@ -88,12 +91,13 @@ export default async (issue, { jiraAttachments }) => {
     fields: {
       ...fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
-        [fieldKey]: traverse(issueV3.fields[fieldKey], {
-          mediaSingle (node) {
-            node.attrs.layout = 'align-start';
-            return node;
-          },
-        }),
+        [fieldKey]: issueV3.fields[fieldKey]
+          ? traverse(issueV3.fields[fieldKey], {
+            mediaSingle (node) {
+              node.attrs.layout = 'align-start';
+              return node;
+            },
+          }) : null,
       }), {}),
     },
   });

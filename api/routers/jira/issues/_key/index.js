@@ -12,9 +12,11 @@ export const patch = async (req, res) => {
 
   const [
     eGroomingData,
-    { issue, attachments },
+    groomingData,
   ] = await catchify(getGroomingData(docId, key));
   if (eGroomingData) return res.error(eGroomingData);
+
+  const { issue, attachments } = groomingData;
 
   const [
     eCleanupAttachments,

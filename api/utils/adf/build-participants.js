@@ -1,7 +1,7 @@
-import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
-import { MEMBERS } from '~/api/constants/members';
+const adf = require('@atlaskit/adf-utils/builders');
+const { MEMBERS } = require('~/api/constants/members');
 
-export default participants => (
+module.exports = participants => (
   participants.map(emailName => MEMBERS[emailName]
     ? adf.mention({ id: MEMBERS[emailName] })
     : adf.text(`@${emailName}`),

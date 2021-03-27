@@ -1,6 +1,6 @@
-import qs from 'qs';
+const qs = require('qs');
 
-export default (req, res, next) => {
+module.exports = (req, res, next) => {
   req.query = qs.parse(req._parsedUrl.query || '');
   next();
 };

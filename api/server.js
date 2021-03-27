@@ -1,13 +1,13 @@
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
-import { API_BASEPATH } from '~/api/constants/comms';
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const { API_BASEPATH } = require('~/api/constants/comms');
 
-import queryParser from './middlewares/query-parser';
-import resUtil from './middlewares/res';
-import apiGuard from './middlewares/api-guard';
+const queryParser = require('./middlewares/query-parser');
+const resUtil = require('./middlewares/res');
+const apiGuard = require('./middlewares/api-guard');
 
-import routers from './routers';
+const routers = require('./routers');
 
 const app = express();
 
@@ -17,14 +17,14 @@ const app = express();
   bodyParser.json(),
   queryParser,
   resUtil,
-  // apiGuard,
+  apiGuard,
 ].forEach((middleware) => {
   app.use(middleware);
 });
 
 app.use('/', routers);
 
-export default {
+module.exports = {
   path: API_BASEPATH,
   handler: app,
 };

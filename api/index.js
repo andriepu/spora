@@ -1,8 +1,8 @@
-import { resolve } from 'path';
-import moduleAlias from 'module-alias';
+const { resolve } = require('path');
+const moduleAlias = require('module-alias');
 
 moduleAlias.addAliases({
   '~': resolve(__dirname, '../'),
 });
 
-export default require('./server').default;
+module.exports = require('./server');

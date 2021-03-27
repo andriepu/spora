@@ -1,10 +1,10 @@
-import * as adf from '@atlaskit/adf-utils/dist/esm/builders';
-import { MEMBERS } from '~/api/constants/members';
-import buildParticipants from '~/api/utils/adf/build-participants';
+const adf = require('@atlaskit/adf-utils/builders');
+const { MEMBERS } = require('~/api/constants/members');
+const buildParticipants = require('~/api/utils/adf/build-participants');
 
 const { SQUAD_NAME } = process.env;
 
-export default ({ participants = Object.keys(MEMBERS), date }) => (
+module.exports = ({ participants = Object.keys(MEMBERS), date }) => (
   adf.expand({ title: 'Page Information' })(
     adf.p(adf.strong('Date')),
     adf.ul(adf.listItem([

@@ -1,15 +1,14 @@
-import { pick } from 'lodash';
-import { traverse, filter, reduce } from '@atlaskit/adf-utils/traverse';
-import * as adf from '@atlaskit/adf-utils/builders';
-
-import {
+const { pick } = require('lodash');
+const { traverse, filter, reduce } = require('@atlaskit/adf-utils/traverse');
+const adf = require('@atlaskit/adf-utils/builders');
+const {
   ACCEPTANCE_KEY,
   COMPONENTS_KEY,
   CONSTRAINTS_KEY,
   DESCRIPTION_KEY,
   IMPLEMENTATION_KEY,
   STORY_POINTS_KEY,
-} from '~/api/constants/customfields';
+} = require('~/api/constants/customfields');
 
 const isContainingText = node => !!filter(node, child => (
   child.type === 'paragraph' && child.content
@@ -46,7 +45,7 @@ const sanitizeAdf = adf => traverse(adf, {
   },
 });
 
-export default (doc) => {
+module.exports = (doc) => {
   const tables = filter(doc, node => node.type === 'table');
 
   return tables.map((table) => {

@@ -3,7 +3,6 @@ export default {
     port: process.env.PORT || 3000,
   },
   ssr: false,
-  mode: 'universal',
   target: 'server',
   head: {
     title: 'Spora: Scrum Process Assistant',
@@ -29,7 +28,7 @@ export default {
     { src: '~plugins/vue-loading-overlay.js', ssr: false },
   ],
   components: [
-    { path: '~/components', extensions: ['vue'] },
+    { path: '~/components', extensions: ['vue'], level: 1 },
   ],
   buildModules: [
     '@nuxtjs/eslint-module',

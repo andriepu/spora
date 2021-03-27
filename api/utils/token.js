@@ -1,6 +1,6 @@
-import md5 from 'md5';
+const md5 = require('md5');
 
-export const generateToken = () => {
+exports.generateToken = () => {
   const date = new Date();
   date.setHours(0);
   date.setMinutes(0);
@@ -13,7 +13,7 @@ export const generateToken = () => {
   ].join());
 };
 
-export const generateDailyMaxAge = () => {
+exports.generateDailyMaxAge = () => {
   const endDayDate = new Date();
   endDayDate.setHours(23);
   endDayDate.setMinutes(59);
@@ -23,4 +23,4 @@ export const generateDailyMaxAge = () => {
   return Math.floor((endDayDate.getTime() - Date.now()) / 1000);
 };
 
-export const checkValidToken = token => token === generateToken();
+exports.checkValidToken = token => token === exports.generateToken();

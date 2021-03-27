@@ -1,7 +1,7 @@
-import { TOKEN_HEADER } from '~/api/constants/comms';
-import { checkValidToken } from '~/api/utils/token';
+const { TOKEN_HEADER } = require('~/api/constants/comms');
+const { checkValidToken } = require('~/api/utils/token');
 
-export default (req, res, next) => {
+module.exports = (req, res, next) => {
   if ([
     checkValidToken(req.cookies.token),
     checkValidToken(req.headers[TOKEN_HEADER]),

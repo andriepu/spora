@@ -1,13 +1,14 @@
-import express from 'express';
-import requireGlob from 'require-glob';
+const express = require('express');
+const requireGlob = require('require-glob');
 
 const router = express.Router();
 
 const generateKey = path => path
   .replace(/\/index\.js$/, '')
+  .replace(/\./g, '/')
   .replace(/_/g, ':');
 
-const modules = requireGlob.sync('./*/**/index.js', {
+const modules = requireGlob.sync('./*/index.js', {
   reducer: ({ base }, result, file) => ({
     ...result,
     [generateKey(file.path.replace(base, ''))]: (() => {
@@ -28,4 +29,4 @@ Object.keys(modules).map((path, i) => {
   router[method](path, middleware);
 });
 
-export default router;
+module.exports = router;

@@ -1,7 +1,7 @@
-import { merge } from 'lodash';
-import axios from 'axios';
-import { TOKEN_HEADER, API_BASEPATH } from '~/api/constants/comms';
-import { generateToken } from '~/api/utils/token';
+const { merge } = require('lodash');
+const axios = require('axios');
+const { TOKEN_HEADER, API_BASEPATH } = require('~/api/constants/comms');
+const { generateToken } = require('~/api/utils/token');
 
 const { PORT } = process.env;
 
@@ -14,4 +14,4 @@ instance.interceptors.request.use(config => merge(
   { headers: { [TOKEN_HEADER]: generateToken() } },
 ));
 
-export default instance;
+module.exports = instance;

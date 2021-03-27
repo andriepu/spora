@@ -1,5 +1,5 @@
-import axios from 'axios';
-import qs from 'qs';
+const axios = require('axios');
+const qs = require('qs');
 
 const {
   ATLASSIAN_USERNAME,
@@ -7,7 +7,7 @@ const {
   CONFLUENCE_URL,
 } = process.env;
 
-export default axios.create({
+module.exports = axios.create({
   baseURL: new URL('/wiki/rest/api', CONFLUENCE_URL).href,
   headers: {
     'Content-Type': 'application/json',

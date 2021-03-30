@@ -4,20 +4,11 @@ const { p, text } = require('@atlaskit/adf-utils/builders');
 const axiosJira = require('~/api/modules/axios/--jira');
 const axiosJiraV2 = require('~/api/modules/axios/--jira--v2');
 const {
-  ACCEPTANCE_KEY,
   COMPONENTS_KEY,
-  CONSTRAINTS_KEY,
-  DESCRIPTION_KEY,
-  IMPLEMENTATION_KEY,
   STORY_POINTS_KEY,
-} = require('~/api/constants/customfields');
 
-const fieldsWithEditor = [
-  ACCEPTANCE_KEY,
-  CONSTRAINTS_KEY,
-  DESCRIPTION_KEY,
-  IMPLEMENTATION_KEY,
-];
+  $fieldsWithEditor,
+} = require('~/api/constants/customfields');
 
 const mediaSign = '@#@';
 
@@ -46,7 +37,7 @@ module.exports = async (issue, { jiraAttachments }) => {
 
   const [ePutV3] = await catchify(axiosJira.put(`/issue/${issue.key}`, {
     fields: {
-      ...fieldsWithEditor.reduce((acc, fieldKey) => ({
+      ...$fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
         [fieldKey]: issue[fieldKey]
           ? mediaToText(issue[fieldKey])
@@ -62,13 +53,13 @@ module.exports = async (issue, { jiraAttachments }) => {
     eGetV2,
     issueV2,
   ] = await catchify(axiosJiraV2.get(`/issue/${issue.key}`, {
-    params: { fields: fieldsWithEditor.join(',') },
+    params: { fields: $fieldsWithEditor.join(',') },
   }).then(({ data }) => data));
   if (eGetV2) throw eGetV2;
 
   const [ePutV2] = await catchify(axiosJiraV2.put(`/issue/${issue.key}`, {
     fields: {
-      ...fieldsWithEditor.reduce((acc, fieldKey) => ({
+      ...$fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
         [fieldKey]: (issueV2.fields[fieldKey] || '').includes(mediaSign)
           ? textToMedia(issueV2.fields[fieldKey])
@@ -82,13 +73,13 @@ module.exports = async (issue, { jiraAttachments }) => {
     eGetV3,
     issueV3,
   ] = await catchify(axiosJira.get(`/issue/${issue.key}`, {
-    params: { fields: fieldsWithEditor.join(',') },
+    params: { fields: $fieldsWithEditor.join(',') },
   }).then(({ data }) => data));
   if (eGetV3) throw eGetV3;
 
   return axiosJira.put(`/issue/${issue.key}`, {
     fields: {
-      ...fieldsWithEditor.reduce((acc, fieldKey) => ({
+      ...$fieldsWithEditor.reduce((acc, fieldKey) => ({
         ...acc,
         [fieldKey]: issueV3.fields[fieldKey]
           ? traverse(issueV3.fields[fieldKey], {

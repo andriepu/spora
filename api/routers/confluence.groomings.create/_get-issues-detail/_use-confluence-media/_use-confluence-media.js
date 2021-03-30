@@ -1,6 +1,6 @@
 const { traverse } = require('@atlaskit/adf-utils/traverse');
 
-module.exports = (adf, { attachments }) => {
+module.exports = (adf, attachments) => {
   let i = 0;
 
   return traverse(adf, {

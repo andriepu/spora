@@ -1,8 +1,7 @@
 const catchify = require('catchify');
-
-const postComment = require('./_post-comment');
 const filterComments = require('./_filter-comments');
 const getExistingComments = require('./_get-existing-comments');
+const postComment = require('./_post-comment');
 
 module.exports = async (issue) => {
   if (!issue.comment) return;

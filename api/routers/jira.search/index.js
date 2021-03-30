@@ -1,8 +1,5 @@
 const catchify = require('catchify');
-const axios = require('~/api/modules/axios/--jira');
-const customfields = require('~/api/constants/customfields');
-
-const { PROJECT_KEY } = process.env;
+const getIssuesDetail = require('./_get-issues-detail');
 
 exports.get = async (req, res, next) => {
   const keys = (req.query.keys || '').replace(/\s*/g, '');
@@ -14,16 +11,9 @@ exports.get = async (req, res, next) => {
     });
   }
 
-  const [err, resp] = await catchify(
-    axios.get('/search', {
-      params: {
-        jql: `project="${PROJECT_KEY}" AND key in (${keys}) ORDER BY RANK`,
-        fields: Object.keys(customfields).map(k => customfields[k]).join(','),
-      },
-    }).then(({ data }) => data),
-  );
+  const [eSearchIssues, resp] = await catchify(getIssuesDetail(keys));
 
-  if (err) return res.error(err);
+  if (eSearchIssues) return res.error(eSearchIssues);
 
   return res.json({ data: resp.issues });
 };

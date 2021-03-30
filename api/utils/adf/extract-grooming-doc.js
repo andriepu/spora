@@ -1,5 +1,5 @@
 const { pick } = require('lodash');
-const { traverse, filter, reduce } = require('@atlaskit/adf-utils/traverse');
+const { traverse, filter, map, reduce } = require('@atlaskit/adf-utils/traverse');
 const adf = require('@atlaskit/adf-utils/builders');
 const {
   ACCEPTANCE_KEY,
@@ -10,9 +10,7 @@ const {
   STORY_POINTS_KEY,
 } = require('~/api/constants/customfields');
 
-const isContainingText = node => !!filter(node, child => (
-  child.type === 'paragraph' && child.content
-)).length;
+const isFilled = node => map(node, child => child).length > 2;
 
 const extractQnA = (taskList) => {
   const list = reduce(
@@ -100,15 +98,15 @@ module.exports = (doc) => {
         null,
       ),
 
-      [ACCEPTANCE_KEY]: isContainingText(acceptanceCell)
+      [ACCEPTANCE_KEY]: isFilled(acceptanceCell)
         ? sanitizeAdf(adf.doc(...acceptanceCell.content))
         : null,
 
-      [IMPLEMENTATION_KEY]: isContainingText(detailCell)
+      [IMPLEMENTATION_KEY]: isFilled(detailCell)
         ? sanitizeAdf(adf.doc(...detailCell.content))
         : null,
 
-      [CONSTRAINTS_KEY]: isContainingText(constraintsCell)
+      [CONSTRAINTS_KEY]: isFilled(constraintsCell)
         ? sanitizeAdf(adf.doc(...constraintsCell.content))
         : null,
 
@@ -126,7 +124,7 @@ module.exports = (doc) => {
           ] : []),
         )),
 
-      [DESCRIPTION_KEY]: isContainingText(descriptionCell)
+      [DESCRIPTION_KEY]: isFilled(descriptionCell)
         ? sanitizeAdf(adf.doc(...descriptionCell.content))
         : null,
 

@@ -5,7 +5,7 @@ const axiosJira = require('~/api/modules/axios/--jira');
 module.exports = (attachments, key) => Promise.all(attachments.map(att => (
   axiosJira.get(att.url, { responseType: 'stream' })
     .then(({ data: file }) => {
-      const filename = `${att.filename} - ${Date.now()}`;
+      const filename = `${att.filename.replace(/^\[\w+-\d+\] /, '')}`;
 
       const formData = new FormData();
       formData.append('file', file, filename);

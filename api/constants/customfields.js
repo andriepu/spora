@@ -7,3 +7,10 @@ exports.IMPLEMENTATION_KEY = 'customfield_10200';
 exports.PARENT_KEY = 'parent';
 exports.STORY_POINTS_KEY = 'customfield_10022';
 exports.SUMMARY_KEY = 'summary';
+
+exports.$fieldsWithEditor = [
+  exports.ACCEPTANCE_KEY,
+  exports.CONSTRAINTS_KEY,
+  exports.DESCRIPTION_KEY,
+  exports.IMPLEMENTATION_KEY,
+];

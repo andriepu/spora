@@ -40,15 +40,6 @@ export default {
     '@nuxtjs/dotenv',
     'nuxt-basic-auth-module',
     'cookie-universal-nuxt',
-
-    [
-      'primevue/nuxt', {
-        theme: 'saga-blue',
-        ripple: true,
-        components: [],
-        directives: [],
-      },
-    ],
   ],
   basic: {
     name: process.env.BASIC_USER,

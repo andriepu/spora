@@ -27,7 +27,7 @@ export default {
           label: 'Grooming',
           items: [
             this.createMenuItem({
-              label: 'Create Document',
+              label: 'Add to Confluence',
               icon: 'pi pi-file',
               to: '/groomings/confluence/new',
             }),

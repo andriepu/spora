@@ -5,10 +5,10 @@ const { BOARD_ID } = process.env;
 
 module.exports = sprintId => (
   axiosJiraAgile.get(`/board/${BOARD_ID}/sprint/${sprintId}/issue`, {
-    params: { fields: Object.values(customfields).join(',') },
+    params: { fields: ['status', ...Object.values(customfields)].join(',') },
   }).then(({ data }) => (
     data.issues
-      .filter(({ fields }) => !fields[customfields.PARENT_KEY])
+      .filter(({ fields }) => !fields[customfields.PARENT_KEY] && fields.status.statusCategory.key !== 'done')
       .map(({ id, key, fields }) => ({
         id,
         key,

@@ -27,6 +27,7 @@ export default {
   },
 
   data: () => ({
+    isSubmitting: false,
     isIssuesFetched: false,
 
     futuresSprint: [],
@@ -81,6 +82,7 @@ export default {
 
     async doSubmit () {
       const loader = this.$loading.show();
+      this.isSubmitting = true;
 
       const [err, resp] = await catchify(
         axios.post('/api/confluence/groomings/create', {
@@ -88,6 +90,7 @@ export default {
         }).then(({ data }) => data),
       );
 
+      this.isSubmitting = false;
       loader.hide();
 
       if (err) {

@@ -2,8 +2,7 @@ export default {
   server: {
     port: process.env.PORT || 3000,
   },
-  ssr: false,
-  target: 'server',
+  ssr: true,
   head: {
     title: 'Spora: Scrum Process Assistant',
     meta: [
@@ -28,8 +27,11 @@ export default {
     { src: '~plugins/vue-loading-overlay.js', ssr: false },
   ],
   components: [
-    { path: '~/components', extensions: ['vue'], level: 1 },
+    { path: '~/components', extensions: ['vue'] },
   ],
+  build: {
+    transpile: ['primevue'],
+  },
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
@@ -38,6 +40,15 @@ export default {
     '@nuxtjs/dotenv',
     'nuxt-basic-auth-module',
     'cookie-universal-nuxt',
+
+    [
+      'primevue/nuxt', {
+        theme: 'saga-blue',
+        ripple: true,
+        components: [],
+        directives: [],
+      },
+    ],
   ],
   basic: {
     name: process.env.BASIC_USER,

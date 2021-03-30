@@ -8,5 +8,6 @@ export default ({ app }) => {
     maxAge: generateDailyMaxAge(),
     sameSite: true,
     secure: true,
+    httpOnly: true,
   });
 };

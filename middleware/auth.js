@@ -6,7 +6,7 @@ export default ({ app }) => {
   app.$cookies.set('token', token, {
     path: '/',
     maxAge: generateDailyMaxAge(),
-    sameSite: true,
+    sameSite: 'Strict',
     secure: true,
     httpOnly: true,
   });

@@ -1,3 +1,5 @@
+import redirectSSL from 'redirect-ssl'
+
 export default {
   server: {
     port: process.env.PORT || 3000,
@@ -47,7 +49,12 @@ export default {
     enabled: true,
   },
 
-  serverMiddleware: ['~/api'],
+  serverMiddleware: [
+    redirectSSL.create({
+      enabled: process.env.NODE_ENV === 'production',
+    }),
+    '~/api',
+  ],
 
   env: {
     JIRA_URL: process.env.JIRA_URL,

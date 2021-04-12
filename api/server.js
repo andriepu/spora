@@ -1,4 +1,3 @@
-const sslRedirect = require('heroku-ssl-redirect').default;
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -13,7 +12,6 @@ const routers = require('./routers');
 const app = express();
 
 [
-  sslRedirect(),
   cookieParser(),
   bodyParser.urlencoded({ extended: true }),
   bodyParser.json(),

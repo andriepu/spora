@@ -28,7 +28,6 @@
     "eslint-plugin-nuxt": "^1.0.0",
     "express": "^4.17.1",
     "form-data": "^4.0.0",
-    "heroku-ssl-redirect": "^0.1.1",
     "jira2md": "^2.0.5",
     "md5": "^2.3.0",
     "module-alias": "^2.2.2",

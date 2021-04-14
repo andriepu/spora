@@ -1,4 +1,5 @@
-import redirectSSL from 'redirect-ssl'
+import { API_BASEPATH } from './api/constants/comms';
+import redirectSSL from 'redirect-ssl';
 
 export default {
   server: {
@@ -51,8 +52,8 @@ export default {
 
   serverMiddleware: [
     redirectSSL.create({
-      redirectPort: process.env.PORT,
       enabled: process.env.NODE_ENV === 'production',
+      exclude: [new RegExp(`^${API_BASEPATH}/`)],
     }),
     '~/api',
   ],

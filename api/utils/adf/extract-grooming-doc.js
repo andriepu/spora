@@ -17,7 +17,8 @@ const extractQnA = (taskList) => {
     taskList,
     (acc, item) =>
       item.type === 'taskItem' &&
-      !(item.content.length === 1 && item.content[0].text === '-')
+      item.content &&
+      !(item.content && item.content.length === 1 && item.content[0].text === '-')
         ? [...acc, adf.listItem([adf.p(...item.content)])]
         : acc,
     [],

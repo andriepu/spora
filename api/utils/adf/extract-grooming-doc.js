@@ -84,7 +84,7 @@ module.exports = (doc) => {
             : acc
         ),
         '',
-      ),
+      ).replace(/\?.*$/, ''),
 
       [STORY_POINTS_KEY]: reduce(
         storyPointsCell,

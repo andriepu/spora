@@ -6,7 +6,7 @@ exports.get = async (req, res, next) => {
 
   if (!keys) {
     return res.error({
-      message: 'missing required query : keys',
+      message: 'missing required query: keys',
       status: 400,
     });
   }

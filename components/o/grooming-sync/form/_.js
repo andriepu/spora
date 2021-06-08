@@ -58,6 +58,13 @@ export default {
 
       if (err) {
         this.selectedGrooming = null;
+
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Get Grooming Issues Failed!',
+          detail: err.response.data.errorMessages[0],
+          life: 3000,
+        });
       } else {
         this.issues = resp.data.sort((a, b) => (
           (b[STORY_POINTS_KEY] || 0) - (a[STORY_POINTS_KEY] || 0)
@@ -87,7 +94,7 @@ export default {
       this.$toast.add({
         severity: 'error',
         summary: 'Get Groomings Failed!',
-        detail: err.message,
+        detail: err.response.errorMessages[0],
         life: 3000,
       });
     } else {

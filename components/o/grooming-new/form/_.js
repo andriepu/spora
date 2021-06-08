@@ -69,7 +69,7 @@ export default {
         this.$toast.add({
           severity: 'error',
           summary: 'Get Issues Failed!',
-          detail: err.message,
+          detail: err.response.data.errorMessages[0],
           life: 3000,
         });
       } else {
@@ -97,7 +97,7 @@ export default {
         this.$toast.add({
           severity: 'error',
           summary: 'Export Grooming Failed!',
-          detail: err.message,
+          detail: err.response.data.errorMessages[0],
           life: 3000,
         });
       } else {
@@ -127,7 +127,7 @@ export default {
       this.$toast.add({
         severity: 'error',
         summary: 'Fetch Data Failed!',
-        detail: err.message,
+        detail: err.response.data.errorMessages[0],
         life: 3000,
       });
     } else {

@@ -28,7 +28,7 @@ export default {
         this.$toast.add({
           severity: 'error',
           summary: 'Create Retro Failed!',
-          detail: err.message,
+          detail: err.response.data.errorMessages[0],
           life: 3000,
         });
       } else {

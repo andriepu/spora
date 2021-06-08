@@ -21,7 +21,7 @@ exports.get = async (req, res, next) => {
 
   const keys = groomingData.map(({ key }) => key);
   const [eSummaries, summaries] = await catchify(
-    getIssuesDetail(keys).then(data => data.reduce((acc, { key, fields }) => ({
+    getIssuesDetail(keys).then((data = []) => data.reduce((acc, { key, fields }) => ({
       ...acc,
       [key]: fields[SUMMARY_KEY],
     }), {})),

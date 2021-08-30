@@ -45,6 +45,7 @@ module.exports = async (issue, { jiraAttachments }) => {
     },
     mediaSingle (node) {
       const attRef = jiraAttachmentMap[node.content[0].attrs.id];
+
       return p(text([
         MEDIA_IMAGE_SIGN,
         attRef.filename,

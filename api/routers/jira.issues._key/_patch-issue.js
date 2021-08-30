@@ -27,36 +27,32 @@ module.exports = async (issue, { jiraAttachments }) => {
   const mediaToText = adf => traverse(adf, {
     mediaGroup (node) {
       return p(text(node.content.map((content) => {
-        if (content.attrs.__fileMimeType.startsWith('application')) {
+        console.log(content.attrs);
+        if (content.attrs.__fileMimeType?.startsWith('application')) {
           const attRef = jiraAttachmentMap[content.attrs.id];
           return `${MEDIA_APP_SIGN}${attRef.filename}]`;
         }
 
-        if (content.attrs.__fileMimeType.startsWith('image')) {
-          const attRef = jiraAttachmentMap[content.attrs.id];
-          return [
-            MEDIA_IMAGE_SIGN,
-            attRef.filename,
-            '|',
-            `width=${attRef.confluence_reference.width},height=${attRef.confluence_reference.height}`,
-            MEDIA_IMAGE_SIGN,
-          ].join('');
-        }
+        const attRef = jiraAttachmentMap[content.attrs.id];
 
-        return text('');
-      }).join('')));
-    },
-    mediaSingle (node) {
-      if (node.content[0].attrs.__fileMimeType.startsWith('image')) {
-        const attRef = jiraAttachmentMap[node.content[0].attrs.id];
-        return p(text([
+        return [
           MEDIA_IMAGE_SIGN,
           attRef.filename,
           '|',
           `width=${attRef.confluence_reference.width},height=${attRef.confluence_reference.height}`,
           MEDIA_IMAGE_SIGN,
-        ].join('')));
-      }
+        ].join('');
+      }).join('')));
+    },
+    mediaSingle (node) {
+      const attRef = jiraAttachmentMap[node.content[0].attrs.id];
+      return p(text([
+        MEDIA_IMAGE_SIGN,
+        attRef.filename,
+        '|',
+        `width=${attRef.confluence_reference.width},height=${attRef.confluence_reference.height}`,
+        MEDIA_IMAGE_SIGN,
+      ].join('')));
     },
   });
 

@@ -27,7 +27,6 @@ module.exports = async (issue, { jiraAttachments }) => {
   const mediaToText = adf => traverse(adf, {
     mediaGroup (node) {
       return p(text(node.content.map((content) => {
-        console.log(content.attrs);
         if (content.attrs.__fileMimeType?.startsWith('application')) {
           const attRef = jiraAttachmentMap[content.attrs.id];
           return `${MEDIA_APP_SIGN}${attRef.filename}]`;
